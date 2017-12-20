@@ -1,7 +1,7 @@
 package tmasociados.com.taximonterrico.presentation.main;
 
 import android.Manifest;
-import android.R;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,30 +17,19 @@ import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseInstallation;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.SaveCallback;
-import com.tmasociados.activity.MainActivity;
-import com.tmasociados.notificaciones.TMAsociadosBroadcastReceiver;
-import com.tmasociados.servicios.LocationService;
-import com.tmasociados.utils.AppController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import tmasociados.com.taximonterrico.MainActivity;
+import tmasociados.com.taximonterrico.R;
+import tmasociados.com.taximonterrico.servicios.LocationService;
+
 public class PermisosActivity extends AppCompatActivity {
 
-    private static boolean isParseInitialized = false;
-
-    String VidInstallation;
-
-    String device_id;
+    Map<String, Integer> perms = new HashMap<>();
 
 
     @Override
@@ -49,10 +38,7 @@ public class PermisosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_permisos);
         getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>Permisos App</font>"));
 
-        AppController.getInstance().clearApplicationData();
-
-
-
+       // AppController.getInstance().clearApplicationData();
 
 
         if (Build.VERSION_CODES.M >= 23) {
@@ -82,7 +68,7 @@ public class PermisosActivity extends AppCompatActivity {
         }
     }
 
-    void llamarparse()
+   /* void llamarparse()
     {
         if (!isParseInitialized) {
             Parse.initialize(new Parse.Configuration.Builder(this)
@@ -112,9 +98,9 @@ public class PermisosActivity extends AppCompatActivity {
 
         }
 
-    }
+    }*/
 
-    void actualizaparse() {
+    /*void actualizaparse() {
         if (VidInstallation.equals("")) {
 
         } else {
@@ -149,7 +135,8 @@ public class PermisosActivity extends AppCompatActivity {
 
 
     }
-
+*/
+/*
 
     public String getIMEI() {
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -162,6 +149,7 @@ public class PermisosActivity extends AppCompatActivity {
         return device_id;
     }
 
+*/
 
     @Override
     public void onResume() {
@@ -239,7 +227,6 @@ public class PermisosActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case 1: {
-                Map<String, Integer> perms = new HashMap<>();
                 perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.ACCESS_COARSE_LOCATION, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.CALL_PHONE, PackageManager.PERMISSION_GRANTED);
@@ -256,32 +243,12 @@ public class PermisosActivity extends AppCompatActivity {
                 if (grantResults.length > 0) {
                     for (int i = 0; i < permissions.length; i++)
                         perms.put(permissions[i], grantResults[i]);
-                    if (perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                            perms.get(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                            perms.get(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED &&
-                            perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED &&
-                            perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-
-                            &&
-                            perms.get(Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED
-                            &&
-                            perms.get(Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED
-                            &&
-                            perms.get(Manifest.permission.ACCESS_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED
-                            &&
-                            perms.get(Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED
-                            &&
-                            perms.get(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
-                            &&
-                            perms.get(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED
-
-                            ) {
+                    if (verificarPermisos()) {
                         Intent serviceIntentx = new Intent(this, LocationService.class);
                         startService(serviceIntentx);
 
-                        Intent serviceIntenta = new Intent(this, TMAsociadosBroadcastReceiver.class);
-                        startService(serviceIntenta);
-
+                      /*  Intent serviceIntenta = new Intent(this, TMAsociadosBroadcastReceiver.class);
+                        startService(serviceIntenta);*/
 
                         startActivity(new Intent(getBaseContext(), MainActivity.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
@@ -329,6 +296,32 @@ public class PermisosActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public boolean verificarPermisos(){
+
+        if(perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                perms.get(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                perms.get(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED &&
+                perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED &&
+                perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+
+                &&
+                perms.get(Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED
+                &&
+                perms.get(Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED
+                &&
+                perms.get(Manifest.permission.ACCESS_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED
+                &&
+                perms.get(Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED
+                &&
+                perms.get(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
+                &&
+                perms.get(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED){
+            return true;
+        }
+
+        return false;
     }
 
     private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {

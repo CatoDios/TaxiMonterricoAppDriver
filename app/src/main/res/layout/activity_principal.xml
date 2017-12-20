@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
@@ -17,46 +16,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="3dp"
-            android:foregroundTint="@color/White"
             android:minHeight="?attr/actionBarSize"
-            app:itemIconTint="@color/White"
             app:title="Symbiosis"
+            app:itemIconTint="@color/White"
+            android:foregroundTint="@color/White"
             app:titleTextColor="@color/White">
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
-
     <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/drawer_layout"
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_scrollFlags="scroll|enterAlways"
+        tools:context="com.cerezaconsulting.pushayadmin.presentation.activities.TravelActivity"
         tools:openDrawer="start">
-
-        <include
-            layout="@layout/app_bar_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-
+        <!-- main content mView -->
         <FrameLayout
             android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/background_light" />
+            android:background="@android:color/background_light"
+            />
 
-
+        <!-- The navigation drawer -->
         <android.support.design.widget.NavigationView
-            android:id="@+id/nav_view"
+            android:id="@+id/navigation"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:fitsSystemWindows="true"
+            app:itemTextColor="@color/black"
+            app:itemIconTint="@color/black"
+            android:background="@color/White"
             app:headerLayout="@layout/nav_header_main"
+
             app:menu="@menu/activity_main_drawer" />
 
     </android.support.v4.widget.DrawerLayout>

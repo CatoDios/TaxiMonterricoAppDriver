@@ -77,6 +77,10 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     compile 'com.roughike:bottom-bar:2.3.1'
 
+    compile 'com.google.android.gms:play-services:11.8.0'
+
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+
 
 
 

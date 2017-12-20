@@ -9,37 +9,79 @@
     app:itemIconTint="#ffffff">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-
-        android:id="@+id/imgConductor"
-        android:src="@drawable/user"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
+    <LinearLayout
+        android:weightSum="2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Android Studio"
-        android:id="@+id/lblemail"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/imgConductor" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Android Studio"
-        android:id="@+id/lblemailx"
-        android:gravity="center"
-        android:textSize="18dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/imgConductor"
+                android:src="@drawable/user"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="20dp"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Android Studio"
+                android:id="@+id/lblemailx"
+                android:gravity="center"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/line"
+            android:background="@color/White"
+            android:layout_width="1dp"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/imgCar"
+                android:src="@drawable/user"
+                android:layout_marginStart="20dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Android Studio"
+                android:id="@+id/tv_placa"
+                android:gravity="center"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
+
+
+
+
+    </LinearLayout>
+
+
 
 
 

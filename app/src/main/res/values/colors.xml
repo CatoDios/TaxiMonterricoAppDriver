@@ -35,5 +35,7 @@
 
     <color name="colorlogin">#FFC100</color>
     <color name="error_red">#E0293F</color>
+    <color name="black">#BF000000</color>
+
 
 </resources>
