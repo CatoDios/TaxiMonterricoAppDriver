@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryDark">#688368</color>
+    <color name="colorPrimary">#688368</color>
+    <color name="colorAccent">#688368</color>
+
+    <color name="encabFondo">#BF000000</color>
+    <color name="botonNoDisp">#404040</color>
+    <color name="botonTextNoDisp">#000000</color>
+
+    <color name="colorAccents">#FAFC9C</color>
+
+    <color name="White">#ffffff</color>
+    <color name="Gray">#BBBBBB</color>
+
+    <color name="coloxxx">#c3f5ce</color>
+
+    <color name="coloradvertencia">#812f1c</color>
+
+    <color name="colorvalida">#688368</color>
+
+    <color name="colorcabeceras">#40688368</color>
+
+    <color name="colorgris">#949493</color>
+
+    <color name="colorazul">#295f83</color>
+
+    <color name="colorenelpunto">#70358e</color>
+
+    <color name="colorcontactado">#371a46</color>
+
+    <color name="colorproceso">#2e6c37</color>
+
+    <color name="colordesplazamiento">#584528</color>
+
+    <color name="colorlogin">#FFC100</color>
+    <color name="error_red">#E0293F</color>
+
+</resources>

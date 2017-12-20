@@ -1,0 +1,38 @@
+<tabs>
+
+    <tab
+        id="@+id/tabmenu"
+        icon="@drawable/btnmenu"
+        title="Menu"
+        activeColor="@color/colorAccent"/>
+    <tab
+        id="@+id/tab_calls"
+        icon="@drawable/btn_servicios_llamar"
+        title="Llamar"
+        activeColor="@color/colorAccent"
+        />
+    <tab
+        id="@+id/tab_groups"
+        icon="@drawable/btnserviciosvuelo"
+        title="Vuelo"
+        activeColor="@color/colorAccent" />
+
+    <tab
+        id="@+id/tab_groupsx"
+        icon="@drawable/btnserviciosseguimiento"
+        title="Seg."
+        activeColor="@color/colorAccent" />
+
+    <tab
+        id="@+id/tab_groupsa"
+        icon="@drawable/btnservicioscosto"
+        title="Costos"
+        activeColor="@color/colorAccent" />
+
+    <tab
+        id="@+id/tab_groupsb"
+        icon="@drawable/btnserviciosrequisitos"
+        title="Req."
+        activeColor="@color/colorAccent" />
+
+</tabs>

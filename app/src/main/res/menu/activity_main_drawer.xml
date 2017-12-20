@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+            <item
+            android:id="@+id/nav_turno"
+            android:icon="@drawable/btnmnuturno"
+            android:title="Turno" />
+        <item
+            android:id="@+id/nav_mensaje"
+            android:icon="@drawable/btnmnumensaje"
+            android:title="Mensajeria" />
+
+
+        <item
+            android:id="@+id/nav_pagos"
+            android:icon="@drawable/btnmnupagos"
+            android:title="Pagos" />
+
+        <item
+            android:id="@+id/nav_valespendientes"
+            android:icon="@drawable/btnmnuvalespendientes"
+            android:title="Vales Pendientes" />
+
+
+        <item
+            android:id="@+id/nav_vuelos"
+            android:icon="@drawable/btnserviciosvuelo"
+            android:title="Vuelos" />
+
+        <item
+            android:id="@+id/nav_servicioseparacion"
+            android:icon="@drawable/btnmnuservdisponibles"
+            android:title="Separacion Servicios" />
+
+        <item
+            android:id="@+id/nav_servicioempalmado"
+            android:icon="@drawable/btnmnuestado"
+            android:title="Servicios Empalmado" />
+
+        <item
+            android:id="@+id/nav_servautoasignado"
+            android:icon="@drawable/btnmnuestado"
+            android:title="Autoasignacion de Servicios" />
+
+
+    </group>
+
+    <item android:title="Proceso">
+        <menu>
+            <item
+                android:id="@+id/nav_resetear"
+                android:icon="@drawable/btnresetear"
+                android:title="Resetear Configuracion" />
+
+
+            <item
+                android:id="@+id/nav_casa"
+                android:icon="@drawable/btnmnucasa"
+                android:title="Para mi casa" />
+            <item
+                android:id="@+id/nav_salir"
+                android:icon="@drawable/btnmnusalir"
+                android:title="Cerrar App" />
+        </menu>
+    </item>
+
+</menu>

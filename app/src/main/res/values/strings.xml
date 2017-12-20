@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">TaxiMonterrico</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_burreaactvity">burreaactvity</string>
+    <string name="title_home">Casa</string>
+    <string name="title_perfil">Perfil</string>
+    <string name="title_pagos">Pagos</string>
+    <string name="title_produccion">Produccion</string>
+    <string name="title_activity_main">Esperando Estado...</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_separacion_servicios">Map</string>
+
+
+
+
+    //login strings
+    <string name="email">Correo Electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="begin">Iniciar sesión con:</string>
+    <string name="invited">Continuar como invitado</string>
+    <string name="create_account">Crear una cuenta nueva</string>
+
+</resources>

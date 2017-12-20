@@ -1,0 +1,27 @@
+<tabs>
+
+    <tab
+        id="@+id/tabmenu"
+        icon="@drawable/btnmenu"
+        title="Menu"
+        activeColor="@color/colorAccent"/>
+    <tab
+        id="@+id/tab_calls"
+        icon="@drawable/btnmnuperfil"
+        title="Perfil"
+        activeColor="@color/colorAccent"
+        />
+    <tab
+        id="@+id/tab_groups"
+        icon="@drawable/btnmnuproduccion"
+        title="Produccion"
+        activeColor="@color/colorAccent" />
+
+    <tab
+        id="@+id/tab_groupsx"
+        icon="@drawable/btnserviciosseguimiento"
+        title="Calificacion"
+        activeColor="@color/colorAccent" />
+
+
+</tabs>
