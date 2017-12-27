@@ -28,6 +28,7 @@ import tmasociados.com.taximonterrico.core.BaseActivity;
 import tmasociados.com.taximonterrico.core.BaseFragment;
 import tmasociados.com.taximonterrico.data.models.UserEntity;
 import tmasociados.com.taximonterrico.presentation.auth.dialogs.DialogForgotPassword;
+import tmasociados.com.taximonterrico.presentation.main.PermisosActivity;
 import tmasociados.com.taximonterrico.utils.ProgressDialogCustom;
 
 /**
@@ -132,8 +133,8 @@ public class LoginFragment extends BaseFragment implements LoginContract.View, V
 
     @Override
     public void loginSuccessful(UserEntity userEntity) {
-        newActivityClearPreview(getActivity(), null, MainActivity.class);
         showMessage("Login exitoso");
+        newActivityClearPreview(getActivity(), null, PermisosActivity.class);
     }
 
     @Override

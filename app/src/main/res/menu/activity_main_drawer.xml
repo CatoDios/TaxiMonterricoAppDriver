@@ -3,33 +3,33 @@
 
     <group android:checkableBehavior="single">
             <item
-            android:id="@+id/nav_turno"
+            android:id="@+id/ac_inicio"
             android:icon="@drawable/btnmnuturno"
             android:title="Inicio" />
         <item
-            android:id="@+id/nav_mensaje"
+            android:id="@+id/ac_servicio"
             android:icon="@drawable/btnmnumensaje"
             android:title="Agencia de Servicios" />
 
 
         <item
-            android:id="@+id/nav_pagos"
+            android:id="@+id/ac_ganancia"
             android:icon="@drawable/btnmnupagos"
             android:title="Ganancias" />
 
         <item
-            android:id="@+id/nav_valespendientes"
+            android:id="@+id/ac_chat"
             android:icon="@drawable/btnmnuvalespendientes"
             android:title="Chat" />
 
 
         <item
-            android:id="@+id/nav_vuelos"
+            android:id="@+id/ac_pagos"
             android:icon="@drawable/btnserviciosvuelo"
             android:title="Pagos y Facturación" />
 
         <item
-            android:id="@+id/nav_servicioseparacion"
+            android:id="@+id/ac_perfil"
             android:icon="@drawable/btnmnuservdisponibles"
             android:title="Perfil" />
 
@@ -41,11 +41,11 @@
         android:id="@+id/group2">
 
         <item
-            android:id="@+id/nav_casa"
+            android:id="@+id/ac_casa"
             android:icon="@drawable/btnmnucasa"
             android:title="Para mi casa" />
         <item
-            android:id="@+id/nav_salir"
+            android:id="@+id/ac_salir"
             android:icon="@drawable/btnmnusalir"
             android:title="Cerrar App" />
     </group>

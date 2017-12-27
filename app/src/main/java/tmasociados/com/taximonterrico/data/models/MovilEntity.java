@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class MovilEntity implements Serializable {
 
-    private String A0;
+    private String nplaca;
     private String DesMarca;
     private String color;
     private int año;
@@ -20,12 +20,32 @@ public class MovilEntity implements Serializable {
     private String tipocombustible;
     private String tipocilindrogas;
 
-    public String getA0() {
-        return A0;
+    private String movil;
+    private String fotmovilla;
+
+
+    public String getNplaca() {
+        return nplaca;
     }
 
-    public void setA0(String a0) {
-        A0 = a0;
+    public void setNplaca(String nplaca) {
+        this.nplaca = nplaca;
+    }
+
+    public String getMovil() {
+        return movil;
+    }
+
+    public void setMovil(String movil) {
+        this.movil = movil;
+    }
+
+    public String getFotmovilla() {
+        return fotmovilla;
+    }
+
+    public void setFotmovilla(String fotmovilla) {
+        this.fotmovilla = fotmovilla;
     }
 
     public String getDesMarca() {

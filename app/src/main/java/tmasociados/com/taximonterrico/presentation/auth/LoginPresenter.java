@@ -22,6 +22,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     private final LoginContract.View mView;
     private Context context;
     private final SessionManager mSessionManager;
+    private String user,pass;
 
     public LoginPresenter(@NonNull LoginContract.View mView, @NonNull Context context) {
         this.context = context;
@@ -32,6 +33,8 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void loginUser(String username, String password) {
+        user = username;
+        pass = password;
         LoginRequest loginService =
                 ServiceFactory.createService(LoginRequest.class);
         Call<AccessTokenEntity> call = loginService.login(username,password, "password");
@@ -67,9 +70,9 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void getProfile(final AccessTokenEntity token) {
-       /* LoginRequest loginService =
+       LoginRequest loginService =
                 ServiceFactory.createService(LoginRequest.class);
-        Call<UserEntity> call = loginService.getUser("Token "+ token.getAccessToken());
+        Call<UserEntity> call = loginService.getUser("bearer "+ token.getAccess_token(), user, pass);
         call.enqueue(new Callback<UserEntity>() {
             @Override
             public void onResponse(Call<UserEntity> call, Response<UserEntity> response) {
@@ -96,7 +99,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 mView.setLoadingIndicator(false);
                 mView.errorLogin("Fallo al traer datos, comunicarse con su administrador");
             }
-        });*/
+        });
     }
 
 

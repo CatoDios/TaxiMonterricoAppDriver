@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.text.UnicodeSetSpanner;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.util.Log;
@@ -22,13 +24,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import tmasociados.com.taximonterrico.MainActivity;
 import tmasociados.com.taximonterrico.R;
-import tmasociados.com.taximonterrico.servicios.LocationService;
 
 public class PermisosActivity extends AppCompatActivity {
-
+    private Toolbar toolbar;
     Map<String, Integer> perms = new HashMap<>();
 
 
@@ -36,7 +35,12 @@ public class PermisosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permisos);
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>Permisos App</font>"));
+      //  getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>Permisos App</font>"));
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        toolbar.setTitle("Permisos");
 
        // AppController.getInstance().clearApplicationData();
 
@@ -44,10 +48,10 @@ public class PermisosActivity extends AppCompatActivity {
         if (Build.VERSION_CODES.M >= 23) {
             if (checkAndRequestPermissions()) {
 
-                Intent serviceIntentx = new Intent(this, LocationService.class);
-                startService(serviceIntentx);
+               // Intent serviceIntentx = new Intent(this, LocationService.class);
+               // startService(serviceIntentx);
 
-                startActivity(new Intent(getBaseContext(), MainActivity.class)
+                startActivity(new Intent(getBaseContext(), PrincipalActivity.class)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
                 finish();
 
@@ -55,10 +59,10 @@ public class PermisosActivity extends AppCompatActivity {
             }
         } else {
 
-            Intent serviceIntentx = new Intent(this, LocationService.class);
-            startService(serviceIntentx);
+           // Intent serviceIntentx = new Intent(this, LocationService.class);
+           // startService(serviceIntentx);
 
-            startActivity(new Intent(getBaseContext(), MainActivity.class)
+            startActivity(new Intent(getBaseContext(), PrincipalActivity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
             finish();
 
@@ -243,14 +247,31 @@ public class PermisosActivity extends AppCompatActivity {
                 if (grantResults.length > 0) {
                     for (int i = 0; i < permissions.length; i++)
                         perms.put(permissions[i], grantResults[i]);
-                    if (verificarPermisos()) {
-                        Intent serviceIntentx = new Intent(this, LocationService.class);
-                        startService(serviceIntentx);
+                    if (perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                            perms.get(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                            perms.get(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED &&
+                            perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED &&
+                            perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+
+                            &&
+                            perms.get(Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED
+                            &&
+                            perms.get(Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED
+                            &&
+                            perms.get(Manifest.permission.ACCESS_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED
+                            &&
+                            perms.get(Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED
+                            &&
+                            perms.get(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
+                            &&
+                            perms.get(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
+                       // Intent serviceIntentx = new Intent(this, LocationService.class);
+                       // startService(serviceIntentx);
 
                       /*  Intent serviceIntenta = new Intent(this, TMAsociadosBroadcastReceiver.class);
                         startService(serviceIntenta);*/
 
-                        startActivity(new Intent(getBaseContext(), MainActivity.class)
+                        startActivity(new Intent(getBaseContext(), PrincipalActivity.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
                         finish();
 

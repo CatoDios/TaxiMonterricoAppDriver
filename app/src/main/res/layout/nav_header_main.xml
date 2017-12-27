@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Android Studio"
-                android:id="@+id/lblemailx"
+                android:id="@+id/tv_name"
                 android:gravity="center"
                 android:textSize="14dp"
                 android:textStyle="bold"

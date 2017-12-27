@@ -1,18 +1,28 @@
 package tmasociados.com.taximonterrico.presentation.main;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import tmasociados.com.taximonterrico.R;
 import tmasociados.com.taximonterrico.core.BaseActivity;
 import tmasociados.com.taximonterrico.data.local.SessionManager;
 import tmasociados.com.taximonterrico.data.models.UserEntity;
+import tmasociados.com.taximonterrico.presentation.auth.LoginActivity;
+import tmasociados.com.taximonterrico.utils.ActivityUtils;
 
 /**
  * Created by kath on 20/12/17.
@@ -27,10 +37,11 @@ public class PrincipalActivity extends BaseActivity {
     private ActionBarDrawerToggle mDrawerToggle;
 
     public TextView tv_username;
-    public TextView tv_email;
+    public TextView tv_placa;
     public UserEntity mUser;
     public ImageView imageView;
-    //private TicketsFragment fragment;
+    public ImageView imageCar;
+    private MainFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,31 +81,26 @@ public class PrincipalActivity extends BaseActivity {
         mDrawerToggle.syncState();
         View header = navigationView.getHeaderView(0);
 
-        tv_username = (TextView) header.findViewById(R.id.tv_fullnanme);
-        tv_email = (TextView) header.findViewById(R.id.lblemail);
+        tv_username = (TextView) header.findViewById(R.id.tv_name);
+        tv_placa = (TextView) header.findViewById(R.id.tv_placa);
         imageView = (ImageView) header.findViewById(R.id.imgConductor);
+        imageCar = (ImageView) header.findViewById(R.id.imgCar);
+
         initHeader();
-/*
-        fragment = (TicketsFragment) getSupportFragmentManager()
+
+
+        fragment = (MainFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.body);
 
         if (fragment == null) {
-            fragment = TicketsFragment.newInstance();
+            fragment = MainFragment.newInstance();
 
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                     fragment, R.id.body);
         }
-        new TicketsPresenter(fragment, this);*/
+        //new TicketsPresenter(fragment, this);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUpdateProfile(UserEntity userEntity) {
-        if (userEntity != null) {
-            tv_username.setText(userEntity.getFullName());
-            tv_email.setText(userEntity.getEmail());
-        }
-
-    }
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
@@ -106,25 +112,33 @@ public class PrincipalActivity extends BaseActivity {
                         menuItem.setCheckable(false);
 
                         switch (menuItem.getItemId()) {
-                            case R.id.action_profile:
-                                Intent intent = new Intent(TicketsActivity.this , ProfileActivity.class);
-                                startActivityForResult(intent, 7);
+                            case R.id.ac_inicio:
+                                //Intent intent = new Intent(TicketsActivity.this , ProfileActivity.class);
+                                //startActivityForResult(intent, 7);
                                 break;
-                            case R.id.action_buy:
-                                next(TicketsActivity.this, null, CountriesActivity.class, false);
+                            case R.id.ac_servicio:
+                                // next(TicketsActivity.this, null, CountriesActivity.class, false);
                                 break;
-                            case R.id.action_help:
-                                next(TicketsActivity.this, null, SlideActivity.class, false);
+                            case R.id.ac_ganancia:
+                                //next(TicketsActivity.this, null, SlideActivity.class, false);
                                 break;
-                            case R.id.action_info:
-                                next(TicketsActivity.this,null, AboutUsActivity.class, false);
+                            case R.id.ac_chat:
+                                //next(TicketsActivity.this,null, AboutUsActivity.class, false);
                                 break;
-                            case R.id.action_signout:
+                            case R.id.ac_pagos:
                                 CloseSession();
                                 break;
-
+                            case R.id.ac_perfil:
+                                //Intent intent = new Intent(TicketsActivity.this , ProfileActivity.class);
+                                //startActivityForResult(intent, 7);
+                                break;
+                            case R.id.ac_casa:
+                                //next(TicketsActivity.this, null, CountriesActivity.class, false);
+                                break;
+                            case R.id.ac_salir:
+                                salirapp();
+                                break;
                             default:
-
                                 break;
                         }
                         menuItem.setChecked(false);
@@ -136,7 +150,7 @@ public class PrincipalActivity extends BaseActivity {
 
     private void CloseSession() {
         mSessionManager.closeSession();
-        AccessToken.setCurrentAccessToken(null);
+        //AccessToken.setCurrentAccessToken(null);
         newActivityClearPreview(this, null, LoginActivity.class);
 
     }
@@ -146,28 +160,34 @@ public class PrincipalActivity extends BaseActivity {
 
         mUser = mSessionManager.getUserEntity();
         if (mUser != null) {
-            tv_username.setText(mUser.getFullName());
-            tv_username.setOnClickListener(new View.OnClickListener() {
+            tv_username.setText(mUser.getMovil().getMovil());
+           /* tv_username.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    next(MainActivity.this, null, ProfileActivity.class, false);
+                }
+            });*/
+            tv_placa.setText(mUser.getMovil().getNplaca());
+            /*imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     next(TicketsActivity.this, null, ProfileActivity.class, false);
                 }
-            });
-            tv_email.setText(mUser.getEmail());
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    next(TicketsActivity.this, null, ProfileActivity.class, false);
-                }
-            });
+            });*/
 
-            if (mUser.getPicture() != null) {
+            if (mUser.getAsociado().getImaasoc() != null) {
                 Glide.with(this)
-                        .load(mSessionManager.getUserEntity().getPicture())
-                        .transform(new CircleTransform(this))
+                        .load(mSessionManager.getUserEntity().getAsociado().getImaasoc())
+                        //.transform(new CircleTransform(this))
                         .into(imageView);
             }
 
+            if (mUser.getMovil().getFotmovilla() != null) {
+                Glide.with(this)
+                        .load(mSessionManager.getUserEntity().getMovil().getFotmovilla())
+                        //.transform(new CircleTransform(this))
+                        .into(imageCar);
+            }
         }
     }
 
@@ -179,10 +199,10 @@ public class PrincipalActivity extends BaseActivity {
                     initHeader();
                     break;
                 case 7:
-                    Glide.with(this)
+                   /* Glide.with(this)
                             .load(mSessionManager.getUserEntity().getPicture())
                             .transform(new CircleTransform(this))
-                            .into(imageView);
+                            .into(imageView);*/
                     break;
 
 
@@ -199,9 +219,31 @@ public class PrincipalActivity extends BaseActivity {
         }
     }
 
+    public void salirapp() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Deseas cerrar sesion?")
+                .setTitle("Cerrar Sesion")
+                .setIcon(R.drawable.btnadvertencia)
+                .setCancelable(false)
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        CloseSession();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // some code if you want
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
+
 }

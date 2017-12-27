@@ -7,6 +7,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import tmasociados.com.taximonterrico.data.models.AccessTokenEntity;
 import tmasociados.com.taximonterrico.data.models.UserEntity;
 
@@ -19,8 +20,10 @@ public interface LoginRequest {
     @POST("token")
     Call<AccessTokenEntity> login(@Field("username") String email, @Field("password") String password,@Field("grant_type") String type);
 
-    @GET("user/retrieve/")
-    Call<UserEntity> getUser(@Header("Authorization") String token);
+    @GET("api/AppAsociado/GetLogin")
+    Call<UserEntity> getUser(@Header("Authorization") String token,
+                             @Query("email") String email,
+                             @Query("Password") String pass);
 
    /*
     @FormUrlEncoded
