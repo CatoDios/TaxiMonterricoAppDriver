@@ -10,10 +10,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -63,8 +67,7 @@ public class PrincipalActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        toolbar.setTitle("Mis tickets");
-
+        toolbar.setTitle("Conectado");
         setupDrawerContent(navigationView);
 
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -208,6 +211,23 @@ public class PrincipalActivity extends BaseActivity {
 
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        MenuItem itemSwitch = menu.findItem(R.id.myswitch);
+        itemSwitch.setActionView(R.layout.switch_toolbar);
+        final Switch sw = (Switch) menu.findItem(R.id.myswitch).getActionView().findViewById(R.id.switchForActionBar);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    Toast.makeText(PrincipalActivity.this, "Activo", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

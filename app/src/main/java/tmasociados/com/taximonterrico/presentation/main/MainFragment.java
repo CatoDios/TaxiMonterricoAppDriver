@@ -21,8 +21,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,6 +35,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -55,8 +60,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        GoogleMap.OnMyLocationChangeListener,
-        ActivityCompat.OnRequestPermissionsResultCallback, LocationListener {
+        GoogleMap.OnMyLocationChangeListener, LocationListener {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
@@ -75,7 +79,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     int visualizamovil=0;
     GoogleApiClient mGoogleApiClient;
 
-
+    private View mapView;
     private GoogleMap mMap;
 
     public MainFragment() {
@@ -144,6 +148,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
             ft.replace(R.id.map, mapFragment).commit();
         }
         mapFragment.getMapAsync(this);
+        mapView = mapFragment.getView();
     }
 
 
@@ -160,6 +165,8 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         Toast.makeText(getContext(), "Current location:\n" + location, Toast.LENGTH_LONG).show();
     }
 
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
       /*  mMap = googleMap;
@@ -168,6 +175,13 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         enableMyLocation();*/
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+        // position on right bottom
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        layoutParams.setMargins(0, 0, 30, 30);
+        locationButton.setBackgroundColor(getResources().getColor(R.color.colorazul));
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

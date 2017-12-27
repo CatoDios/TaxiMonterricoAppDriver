@@ -38,11 +38,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAeB5HO_jYjCSeVQkop7cdpa-tv7GcCFjo"/>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"/>
 
-        </activity>
-
-        <activity android:name=".presentation.auth.LoginActivity">
+        <activity android:name=".presentation.auth.LoadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,6 +48,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".presentation.auth.LoginActivity"/>
         <activity android:name=".presentation.main.PermisosActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
