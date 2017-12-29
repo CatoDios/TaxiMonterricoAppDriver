@@ -1,11 +1,22 @@
 package tmasociados.com.taximonterrico.data.remote.request;
 
 
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Query;
+import tmasociados.com.taximonterrico.data.models.EstadoResponse;
+
 /**
  * Created by katherine on 12/06/17.
  */
 
-public interface ListRequest {
+public interface GetRequest {
+
+
+    @GET("api/AppAsociado/GetEstado")
+    Call<EstadoResponse> getEstado(@Header("Authorization") String token,
+                                   @Query("IdAsociado") int id);
     //@GET("subcategory/list")
     //Call<TrackEntityHolder<SubCatEntity>> getCategories(@Header("Authorization") String token,
      //                                                   @Query("page") int numberPage);

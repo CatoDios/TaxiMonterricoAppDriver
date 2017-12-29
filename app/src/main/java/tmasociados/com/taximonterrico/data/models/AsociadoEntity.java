@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class AsociadoEntity implements Serializable {
 
+    private int idasociado;
     private String apellidos;
     private String nombres;
     private int ndni;
@@ -17,6 +18,15 @@ public class AsociadoEntity implements Serializable {
     private int telefonop;
     private int telefonos;
     private String imaasoc;
+
+
+    public int getIdasociado() {
+        return idasociado;
+    }
+
+    public void setIdasociado(int idasociado) {
+        this.idasociado = idasociado;
+    }
 
     public String getApellidos() {
         return apellidos;

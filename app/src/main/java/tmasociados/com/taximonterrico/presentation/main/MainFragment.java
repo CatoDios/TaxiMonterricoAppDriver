@@ -21,11 +21,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -35,21 +33,21 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.mobsandgeeks.saripaar.Validator;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import tmasociados.com.taximonterrico.R;
 import tmasociados.com.taximonterrico.core.BaseFragment;
-import tmasociados.com.taximonterrico.presentation.auth.LoginFragment;
-import tmasociados.com.taximonterrico.presentation.auth.dialogs.DialogForgotPassword;
+import tmasociados.com.taximonterrico.data.local.SessionManager;
+import tmasociados.com.taximonterrico.data.models.EstadoResponse;
 import tmasociados.com.taximonterrico.utils.PermissionUtils;
-import tmasociados.com.taximonterrico.utils.ProgressDialogCustom;
 
 /**
  * Created by kath on 20/12/17.
@@ -60,10 +58,13 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        GoogleMap.OnMyLocationChangeListener, LocationListener {
+        GoogleMap.OnMyLocationChangeListener, LocationListener, MainContract.View {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    @BindView(R.id.btn_estado)
+    Button btnEstado;
+    Unbinder unbinder;
 
     private boolean mPermissionDenied = false;
     SupportMapFragment mapFragment;
@@ -76,11 +77,15 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
     double ylatitude;
     double ylongitude;
-    int visualizamovil=0;
+    int visualizamovil = 0;
     GoogleApiClient mGoogleApiClient;
 
     private View mapView;
     private GoogleMap mMap;
+
+    private SessionManager mSessionManager;
+
+    private MainContract.Presenter mPresenter;
 
     public MainFragment() {
         // Requires empty public constructor
@@ -93,6 +98,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     @Override
     public void onResume() {
         super.onResume();
+        mPresenter.getEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado());
         locationManager.requestLocationUpdates(provider, 400, 1, this);
 
     }
@@ -100,6 +106,8 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPresenter = new MainPresenter(this, getContext());
+        mSessionManager = new SessionManager(getContext());
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         // Define the criteria how to select the locatioin provider -> use
         // default
@@ -134,6 +142,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_map, container, false);
+        unbinder = ButterKnife.bind(this, root);
         return root;
     }
 
@@ -166,7 +175,6 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     }
 
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
       /*  mMap = googleMap;
@@ -184,7 +192,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         locationButton.setBackgroundColor(getResources().getColor(R.color.colorazul));
 
         //Initialize Google Play Services
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(getContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -192,8 +200,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 enableMyLocation();
                 mMap.setMyLocationEnabled(true);
             }
-        }
-        else {
+        } else {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
@@ -210,33 +217,35 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
             mMap.setMyLocationEnabled(true);
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
-            // If request is cancelled, the result arrays are empty.
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                // permission was granted. Do the
-                // contacts-related task you need to do.
-                if (ContextCompat.checkSelfPermission(getContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted. Do the
+                    // contacts-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
 
-                    if (googleApiClient == null) {
-                        buildGoogleApiClient();                    }
-                    mMap.setMyLocationEnabled(true);
+                        if (googleApiClient == null) {
+                            buildGoogleApiClient();
+                        }
+                        mMap.setMyLocationEnabled(true);
+                    }
+
+                } else {
+
+                    // Permission denied, Disable the functionality that depends on this permission.
+                    Toast.makeText(getContext(), "permission denied", Toast.LENGTH_LONG).show();
                 }
-
-            } else {
-
-                // Permission denied, Disable the functionality that depends on this permission.
-                Toast.makeText(getContext(), "permission denied", Toast.LENGTH_LONG).show();
+                return;
             }
-            return;
-        }
 
         }
     }
@@ -295,8 +304,8 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         // Getting longitude of the current location
         double xvlongitude = location.getLongitude();
 
-        ylatitude= location.getLatitude();
-        ylongitude= location.getLongitude();
+        ylatitude = location.getLatitude();
+        ylongitude = location.getLongitude();
 
         LatLng latLng = new LatLng(xvlatitude, xvlongitude);
 
@@ -308,14 +317,12 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
         // getZona(latitude, longitude);
 
-        if (visualizamovil==0)
-        {
+        if (visualizamovil == 0) {
             mMap.clear();
             mMap.addMarker(new MarkerOptions()
                     .position(latLng)
 
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_place)));
-
 
 
             // Showing the current location in Google Map
@@ -329,6 +336,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         }
 
     }
+
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(getContext())
                 .addConnectionCallbacks(this)
@@ -366,6 +374,48 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
     @Override
     public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void getEstado(EstadoResponse estadoResponse) {
+        btnEstado.setText(estadoResponse.getDesestado());
+    }
+
+    @Override
+    public boolean isActive() {
+        return isAdded();
+    }
+
+    @Override
+    public void setPresenter(MainContract.Presenter presenter) {
+        this.mPresenter = presenter;
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean active) {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+
+    }
+
+    @OnClick(R.id.btn_estado)
+    public void onViewClicked() {
 
     }
 }
