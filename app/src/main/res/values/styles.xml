@@ -22,4 +22,7 @@
         <item name="windowActionBarOverlay">true</item>
     </style>
 
+    <style name="SwitchCompatTheme" >
+        <item name="colorControlActivated">@color/green</item>
+    </style>
 </resources>
