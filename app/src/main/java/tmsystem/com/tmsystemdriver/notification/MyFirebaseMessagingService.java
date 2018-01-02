@@ -1,9 +1,11 @@
 package tmsystem.com.tmsystemdriver.notification;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -15,6 +17,10 @@ import com.firebase.jobdispatcher.Job;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
+
 import tmsystem.com.tmsystemdriver.R;
 import tmsystem.com.tmsystemdriver.presentation.main.PrincipalActivity;
 
@@ -24,7 +30,7 @@ import tmsystem.com.tmsystemdriver.presentation.main.PrincipalActivity;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-
+    private boolean sound;
     private static final String TAG = "MyFirebaseMsgService";
 
     /**
@@ -66,6 +72,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            //sendNotification("MENSAJE");
+            sendNotification("MENSAJE");
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
@@ -114,11 +122,70 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
+                        .setDefaults(Notification.DEFAULT_VIBRATE)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                         .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void pushNotification(RemoteMessage remoteMessage) {
+
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setAutoCancel(true);
+      /*  try {
+            Bitmap bitmap = Ion.with(this).load(remoteMessage.getNotification().getIcon()).asBitmap().get();
+            notificationBuilder.setLargeIcon(bitmap);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }*/
+        if (sound)
+            notificationBuilder.setSound(defaultSoundUri);
+
+        sound = false;
+
+        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+        inboxStyle.addLine(remoteMessage.getNotification().getBody());
+        inboxStyle.addLine(new JSONObject(remoteMessage.getData()).toString());
+
+        notificationBuilder.setContentTitle(remoteMessage.getNotification().getTitle());
+        notificationBuilder.setContentText(remoteMessage.getNotification().getBody());
+
+        notificationBuilder.setStyle(inboxStyle);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
+
+    }
+
+
+    private void displayNotification(String message, String title) {
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, notificationBuilder.build());
     }
 }
