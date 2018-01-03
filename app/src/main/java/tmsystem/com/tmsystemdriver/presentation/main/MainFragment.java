@@ -53,6 +53,9 @@ import tmsystem.com.tmsystemdriver.R;
 import tmsystem.com.tmsystemdriver.core.BaseFragment;
 import tmsystem.com.tmsystemdriver.data.local.SessionManager;
 import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
+import tmsystem.com.tmsystemdriver.data.models.SendEstado;
+import tmsystem.com.tmsystemdriver.presentation.asignacion.AsignacionActivity;
+import tmsystem.com.tmsystemdriver.presentation.asignacion.AsignacionServicioActivity;
 import tmsystem.com.tmsystemdriver.utils.PermissionUtils;
 
 /**
@@ -68,8 +71,18 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
-    public static  final int DISPONIBLE = 1;
-    public static  final int NO_DISPONIBLE = 2;
+    public static  final int DISPO = 1;
+    public static  final int NO_DISPO = 2;
+
+
+    public static  final String DISPONIBLE = "DISPONIBLE";
+    public static  final String NO_DISPONIBLE = "NO DISPONIBLE";
+    public static  final String CAMINO_AL_SERVICIO = "CAMINO AL SERVICIO";
+    public static  final String EN_EL_PUNTO = "EN EL PUNTO";
+    public static  final String USUARIO_CONTACTADO = "USUARIO CONTACTADO";
+    public static  final String SERVICIO_EN_PROCESO = "SERVICIO EN PROCESO";
+    public static  final String SERVICIO_FINALIZADO = "SERVICIO FINALIZADO";
+
 
     @BindView(R.id.btn_estado)
     Button btnEstado;
@@ -81,7 +94,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     @BindView(R.id.mySwitch)
     Switch mySwitch;
 
-    private AlertDialog dialogogps, alertverficaversion;
+    private AlertDialog dialogogps, dialogDisponible,alertverficaversion;
     private LocationManager locationManager;
     private String provider;
     GoogleApiClient googleApiClient;
@@ -100,6 +113,9 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     private MainContract.Presenter mPresenter;
 
     private MainInterface mainInterface;
+
+    private int idEstado;
+    private int nextEstado;
 
     public MainFragment() {
         // Requires empty public constructor
@@ -173,7 +189,6 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
 
-
         // set the switch to ON
         mySwitch.setChecked(false);
         // attach a listener to check for changes in state
@@ -185,12 +200,13 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
                 if (isChecked) {
                     //validarEstado();
-                    //SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), DISPONIBLE);
-                    //mPresenter.sendEstado(sendEstado);
+                    //validarEstadoDisponible(idEstado);
+                    SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), DISPO);
+                    mPresenter.sendEstado(sendEstado);
                     Toast.makeText(getContext(), "Seleccionado", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    //SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), NO_DISPONIBLE);
+                    //SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), NO_DISPO);
                     //mPresenter.sendEstado(sendEstado);
                     Toast.makeText(getContext(), "No seleccionado", Toast.LENGTH_SHORT).show();
 
@@ -218,33 +234,127 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
         switch (estado) {
             case 1:
+                UiServicio(DISPONIBLE, DISPONIBLE, false, true, true, false );
+                mySwitch.setClickable(true);
                 break;
 
-                /*
-                DISPONIBLE 1
-                NO DISPONIBLE 2
-                SESION CERRADA 3
-                A MI DOMICILIO 4
+            case 2:
+                UiServicio(NO_DISPONIBLE, NO_DISPONIBLE, false, true, true, false );
+                break;
 
+            case 3:
+                // SESION CERRADA 3
 
-SUSPENSION TEMPORAL 5
-SUSPENSION DEFINITIVA 6
-LLAMADO A BASE 8
-PERMISO TEMPORAL 7
+                break;
+            case 4:
+                // A MI DOMICILIO 4
 
-10 ASIGNACION MANUAL
-11 ASIGNACION AUTOMATICA
-12 CAMINO AL SERVICIO
-13 EN EL PUNTO
-14 USUARIO CONTACTADO
-15 SERVICIO EN PROCESO
-16 SERVICIO FINALIZADO
+                break;
+            case 5:
+                //SUSPENSION TEMPORAL 5
+                String msg = "SUSPENCIÓN TEMPORAL";
+                mySwitch.setClickable(false);
+                alertaNodisponible(msg);
+                break;
+            case 6:
+                //SUSPENSION DEFINITIVA 6
+                String msg1 = "SUSPENSIÓN DEFINITIVA";
+                mySwitch.setClickable(false);
+                alertaNodisponible(msg1);
+                break;
+            case 7:
+                //PERMISO TEMPORAL 7
+                String msg2 = "PERMISO TEMPORAL";
+                mySwitch.setClickable(false);
+                alertaNodisponible(msg2);
+                break;
+            case 8:
+                //LLAMADO A BASE 8
+                String msg3 = "LLAMADO A BASE";
+                mySwitch.setClickable(false);
+                alertaNodisponible(msg3);
 
-*/
+                break;
+            case 9:
+                //SERVICIO PENDIENTE DE ASIGNACION
+                mPresenter.getEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado());
+
+                break;
+            case 10:
+                //10 ASIGNACION MANUAL
+                nextActivity(getActivity(), null, AsignacionServicioActivity.class, true);
+                UiServicio(DISPONIBLE,"TOMAR SERVICIO",true , false, false, true);
+                btnEstado.setBackgroundColor(getResources().getColor(R.color.green));
+
+                break;
+            case 11:
+                //11 ASIGNACION AUTOMATICA
+                nextActivity(getActivity(), null, AsignacionServicioActivity.class, true);
+                UiServicio(DISPONIBLE,"TOMAR SERVICIO",true , false, false, true);
+                btnEstado.setBackgroundColor(getResources().getColor(R.color.green));
+
+                break;
+            case 12:
+                //12 CAMINO AL SERVICIO
+                UiServicio(CAMINO_AL_SERVICIO, EN_EL_PUNTO, true, false, false, true);
+                nextEstado = estado +1;
+
+                break;
+            case 13:
+                //13 EN EL PUNTO
+                UiServicio(EN_EL_PUNTO, USUARIO_CONTACTADO, true,false,false,true);
+                nextEstado = estado +1;
+                // nextEstado = 14;
+
+                break;
+            case 14:
+                //14 USUARIO CONTACTADO11
+                UiServicio(USUARIO_CONTACTADO, SERVICIO_EN_PROCESO,  true,false,false,true);
+                nextEstado = estado +1;
+                //nextEstado = 15;
+
+                break;
+            case 15:
+                //15 SERVICIO EN PROCESO
+                UiServicio(SERVICIO_EN_PROCESO, "FINALIZAR SERVICIO", true,false,false,true);
+                nextEstado = estado +1;
+                //nextEstado = 16;
+
+                break;
+            case 16:
+                //16 SERVICIO FINALIZADO
+                UiServicio(SERVICIO_FINALIZADO,"PONERME DISPONIBLE", true,false,false,true);
+                nextEstado = 1;
+                break;
         }
 
     }
 
+    public void UiServicio(String nombreServicio, String nombreBoton, boolean btnClick, boolean unlock, boolean switchVisible, boolean btnVisible){
+
+        tvConectado.setText(nombreServicio);
+
+        if(switchVisible){
+            mySwitch.setVisibility(View.VISIBLE);
+        }else {
+            mySwitch.setVisibility(View.GONE);
+        }
+
+        if(unlock){
+            mainInterface.unlockDrawer();
+        }else {
+            mainInterface.lockDrawer();
+        }
+
+        if(btnVisible){
+            btnEstado.setVisibility(View.VISIBLE);
+        }else {
+            btnEstado.setVisibility(View.GONE);
+        }
+
+        btnEstado.setClickable(btnClick);
+        btnEstado.setText(nombreBoton);
+    }
 
     @Override
     public boolean onMyLocationButtonClick() {
@@ -377,6 +487,20 @@ PERMISO TEMPORAL 7
         dialogogps.show();
     }
 
+    public void alertaNodisponible(String msg){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Atención");
+        builder.setMessage("Usted se encuentra con " + msg + " no podrá marcarse como disponible hasta que regularice su situaciión");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+               dialogDisponible.dismiss();
+            }
+        });
+        dialogDisponible = builder.create();
+        dialogDisponible.show();
+    }
+
     @Override
     public void onMyLocationChange(Location location) {
         double xvlatitude = location.getLatitude();
@@ -459,14 +583,18 @@ PERMISO TEMPORAL 7
 
     @Override
     public void getEstado(EstadoResponse estadoResponse) {
-        btnEstado.setText(estadoResponse.getDesestado());
+
+        idEstado = estadoResponse.getIdEstado();
+        validarEstadoDisponible(idEstado);
+
+        //btnEstado.setText(estadoResponse.getDesestado());
 
     }
 
     @Override
     public void sendEstadoResponse(String estado) {
 
-        tvConectado.setText("DISPONIBLE");
+        //tvConectado.setText("DISPONIBLE");
 
     }
 
@@ -504,6 +632,8 @@ PERMISO TEMPORAL 7
 
     @OnClick(R.id.btn_estado)
     public void onViewClicked() {
+        SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), nextEstado);
+        mPresenter.sendEstado(sendEstado);
         //mainInterface.lockDrawer();
 
     }

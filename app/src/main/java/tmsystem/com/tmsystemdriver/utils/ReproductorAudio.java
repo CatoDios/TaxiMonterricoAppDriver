@@ -40,7 +40,6 @@ public class ReproductorAudio {
         });
         if (continuo==true)
         {
-
         }
 
         mMediaPlayer.setLooping(true);

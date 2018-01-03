@@ -42,6 +42,9 @@
     <color name="black">#BF000000</color>
 
     <color name="black_alpha_40">#66000000</color>
+    <color name="gray_regular">#858585</color>
+    <color name="gray">#b1b1b1</color>
+
 
 
 </resources>

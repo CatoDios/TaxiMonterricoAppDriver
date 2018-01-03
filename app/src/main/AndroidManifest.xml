@@ -34,6 +34,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- META DATA -->
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAeB5HO_jYjCSeVQkop7cdpa-tv7GcCFjo"/>
@@ -45,6 +47,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
+
+
+        <!-- ACTIVITIES -->
 
         <activity android:name="tmsystem.com.tmsystemdriver.MainActivity"/>
 
@@ -61,6 +66,25 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name="tmsystem.com.tmsystemdriver.presentation.main.PrincipalActivity"/>
+        <activity
+            android:name=".presentation.asignacion.AsignacionServicioActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+
+        <!-- RECEIVER -->
+
+        <receiver
+            android:name=".services.NetworkChangeReceiver"
+            android:label="NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+
+        <!-- SERVICES -->
 
         <service
             android:name=".notification.MyFirebaseInstanceIDService">
@@ -81,6 +105,8 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>
         </service>
+
+
 
     </application>
 
