@@ -11,14 +11,12 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONObject;
 
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import tmsystem.com.tmsystemdriver.R;
@@ -54,12 +52,36 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Map<String, String> data = remoteMessage.getData();
+        String message = data.get("message");
+        String title = data.get("title");
+        displayNotification( message, title);
+        //Integer condition = Integer.parseInt(data.get("condition"));
+
+       /* if(condition != null){
+            switch (condition){
+                case 1:
+
+                    displayNotification(message,title);
+                    startActivity(new Intent(this, PrincipalActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    break;
+                case 2:
+
+                    displayNotification(message,title);
+                    startActivity(new Intent(this, PrincipalActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    break;
+                case 3:
+                    displayNotification(message,title);
+                    startActivity(new Intent(this, PrincipalActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            }*/
+        }
+
 
         // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
+       /* if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
-            if (/* Check if data needs to be processed by long running job */ true) {
+            if (*//* Check if data needs to be processed by long running job *//* true) {
                 // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
                 scheduleJob();
             } else {
@@ -67,24 +89,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 handleNow();
             }
 
-        }
+        }*/
 
         // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
+       /* if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             //sendNotification("MENSAJE");
             sendNotification("MENSAJE");
         }
-
+*/
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
-    }
+
     // [END receive_message]
 
     /**
      * Schedule a job using FirebaseJobDispatcher.
      */
-    private void scheduleJob() {
+ /*   private void scheduleJob() {
         // [START dispatch_job]
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
         Job myJob = dispatcher.newJobBuilder()
@@ -93,7 +115,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .build();
         dispatcher.schedule(myJob);
         // [END dispatch_job]
-    }
+    }*/
 
     /**
      * Handle time allotted to BroadcastReceivers.

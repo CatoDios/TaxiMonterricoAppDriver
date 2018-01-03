@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,7 +74,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void getProfile(final AccessTokenEntity token) {
        LoginRequest loginService =
                 ServiceFactory.createService(LoginRequest.class);
-        Call<UserEntity> call = loginService.getUser("bearer "+ token.getAccess_token(), user, pass);
+        Call<UserEntity> call = loginService.getUser("bearer "+ token.getAccess_token(), user, pass, String.format(FirebaseInstanceId.getInstance().getToken()));
         call.enqueue(new Callback<UserEntity>() {
             @Override
             public void onResponse(Call<UserEntity> call, Response<UserEntity> response) {

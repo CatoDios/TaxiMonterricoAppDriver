@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_tmd2"
@@ -66,6 +67,7 @@
                             android:layout_margin="5dp"
                             android:textColor="@color/White"
                             android:textColorHint="@color/White"
+                            android:backgroundTint="@color/White"
                             android:hint="@string/email"
                             android:textColorLink="@color/White"
                             android:imeOptions="actionNext"
@@ -91,38 +93,27 @@
                         android:layout_gravity="center"
                         android:src="@drawable/ic_password"/>
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
                         <android.support.design.widget.TextInputLayout
-                            android:id="@+id/til_pass"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:textColorHint="@color/White"
-                            android:layout_gravity="center_horizontal">
-
-                            <EditText
+                            android:layout_centerHorizontal="true"
+                            app:passwordToggleEnabled = "true"
+                            app:passwordToggleTint="@color/White"
+                            app:passwordToggleDrawable="@drawable/ic_visibility"
+                            android:layout_height="wrap_content">
+                            <android.support.design.widget.TextInputEditText
                                 android:id="@+id/et_password"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
-                                android:textColor="@color/White"
                                 android:hint="@string/password"
+                                android:textColor="@color/White"
+                                android:backgroundTint="@color/White"
                                 android:inputType="textPassword"
-                                android:textColorHint="@color/White"
-                                android:imeOptions="actionDone" />
+                                android:imeOptions="actionNext"
+                                android:padding="10dp" />
                         </android.support.design.widget.TextInputLayout>
 
-                        <ImageView
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_width="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_visibility"/>
-
-                    </RelativeLayout>
 
 
 

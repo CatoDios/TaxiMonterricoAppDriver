@@ -49,8 +49,6 @@ public class AsignacionFragment extends BaseFragment implements AsignacionContra
     TextView lblestado;
     @BindView(R.id.circularProgressbar)
     ProgressBar circularProgressbar;
-    @BindView(R.id.imageView)
-    CircleImageView imageView;
     @BindView(R.id.tv)
     TextView tv;
     @BindView(R.id.swipe_btn)

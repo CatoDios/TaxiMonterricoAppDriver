@@ -274,5 +274,7 @@ public class PrincipalActivity extends BaseActivity  implements  MainInterface{
     @Override
     public void unlockDrawer() {
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        toolbar.setVisibility(View.VISIBLE);
+
     }
 }

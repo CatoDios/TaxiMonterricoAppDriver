@@ -199,16 +199,14 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                                          boolean isChecked) {
 
                 if (isChecked) {
-                    //validarEstado();
-                    //validarEstadoDisponible(idEstado);
                     SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), DISPO);
                     mPresenter.sendEstado(sendEstado);
-                    Toast.makeText(getContext(), "Seleccionado", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getContext(), "Seleccionado", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    //SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), NO_DISPO);
-                    //mPresenter.sendEstado(sendEstado);
-                    Toast.makeText(getContext(), "No seleccionado", Toast.LENGTH_SHORT).show();
+                    SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), NO_DISPO);
+                    mPresenter.sendEstado(sendEstado);
+                   // Toast.makeText(getContext(), "No seleccionado", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -235,7 +233,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         switch (estado) {
             case 1:
                 UiServicio(DISPONIBLE, DISPONIBLE, false, true, true, false );
-                mySwitch.setClickable(true);
+                mySwitch.setChecked(true);
                 break;
 
             case 2:
@@ -593,6 +591,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
     @Override
     public void sendEstadoResponse(String estado) {
+        mPresenter.getEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado());
 
         //tvConectado.setText("DISPONIBLE");
 

@@ -23,7 +23,8 @@ public interface LoginRequest {
     @GET("api/AppAsociado/GetLogin")
     Call<UserEntity> getUser(@Header("Authorization") String token,
                              @Query("email") String email,
-                             @Query("Password") String pass);
+                             @Query("Password") String pass,
+                             @Query("token") String tokenFirebase);
 
    /*
     @FormUrlEncoded
