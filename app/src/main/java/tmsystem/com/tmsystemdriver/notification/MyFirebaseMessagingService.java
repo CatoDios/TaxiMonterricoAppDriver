@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import tmsystem.com.tmsystemdriver.R;
+import tmsystem.com.tmsystemdriver.presentation.main.MainFragment;
 import tmsystem.com.tmsystemdriver.presentation.main.PrincipalActivity;
 
 /**
@@ -39,6 +41,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+
+        Log.d(TAG, "¡Mensaje recibido!");
+        displayNotification(remoteMessage.getNotification(), remoteMessage.getData());
+        sendNewPromoBroadcast(remoteMessage);
+
         // [START_EXCLUDE]
         // There are two types of messages data messages and notification messages. Data messages are handled
         // here in onMessageReceived whether the app is in the foreground or background. Data messages are the type
@@ -51,11 +58,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+   /*     Log.d(TAG, "From: " + remoteMessage.getFrom());
         Map<String, String> data = remoteMessage.getData();
         String message = data.get("message");
         String title = data.get("title");
-        displayNotification( message, title);
+        displayNotification( message, title);*/
         //Integer condition = Integer.parseInt(data.get("condition"));
 
        /* if(condition != null){
@@ -191,9 +198,39 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
 
     }
+    private void sendNewPromoBroadcast(RemoteMessage remoteMessage) {
+        Intent intent = new Intent(MainFragment.ACTION_NOTIFY_NEW_PROMO);
+        intent.putExtra("title", remoteMessage.getNotification().getTitle());
+        intent.putExtra("description", remoteMessage.getNotification().getBody());
+        intent.putExtra("expiry_date", remoteMessage.getData().get("expiry_date"));
+        intent.putExtra("discount", remoteMessage.getData().get("discount"));
+        LocalBroadcastManager.getInstance(getApplicationContext())
+                .sendBroadcast(intent);
+    }
 
+    private void displayNotification(RemoteMessage.Notification notification, Map<String, String> data) {
+        Intent intent = new Intent(this, PrincipalActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
 
-    private void displayNotification(String message, String title) {
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_audiotrack_light)
+                .setContentTitle(notification.getTitle())
+                .setContentText(notification.getBody())
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, notificationBuilder.build());
+    }
+
+ /*   private void displayNotification(String message, String title) {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -209,5 +246,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, notificationBuilder.build());
-    }
+    }*/
 }

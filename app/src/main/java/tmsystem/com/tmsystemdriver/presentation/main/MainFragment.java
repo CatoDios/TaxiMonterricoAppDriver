@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -70,6 +71,10 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
+    public static final String ACTION_NOTIFY_NEW_PROMO = "NOTIFY_NEW_PROMO";
+    private BroadcastReceiver mNotificationsReceiver;
+
 
     public static  final int DISPO = 1;
     public static  final int NO_DISPO = 2;
@@ -164,6 +169,16 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
             ///latituteField.setText("Location not available");
             // longitudeField.setText("Location not available");
         }
+
+        mNotificationsReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String title = intent.getStringExtra("title");
+                String description = intent.getStringExtra("description");
+                String expiryDate = intent.getStringExtra("expiry_date");
+                String discount = intent.getStringExtra("discount");
+            }
+        };
 
     }
 

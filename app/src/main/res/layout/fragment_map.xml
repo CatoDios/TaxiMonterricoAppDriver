@@ -64,7 +64,7 @@
         android:layout_width="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_dialog_close_dark"
+        android:src="@drawable/ic_mail"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="70dp"
@@ -73,8 +73,8 @@
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/accion_favorito"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_colorNormal="?attr/colorAccent"
+            android:layout_height="wrap_content"/>
+           <!-- fab:fab_colorNormal="?attr/colorAccent"
             fab:fab_icon="@mipmap/ic_launcher"
             fab:fab_size="mini"
             fab:fab_title="Favorito" />
@@ -95,7 +95,7 @@
             fab:fab_colorNormal="?attr/colorAccent"
             fab:fab_icon="@drawable/ic_carro_compra"
             fab:fab_size="mini"
-            fab:fab_title="Añadir a la cesta" />
+            fab:fab_title="Añadir a la cesta" />-->
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </RelativeLayout>
