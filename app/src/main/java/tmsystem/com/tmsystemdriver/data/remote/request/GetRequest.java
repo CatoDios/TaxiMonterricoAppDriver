@@ -1,11 +1,15 @@
 package tmsystem.com.tmsystemdriver.data.remote.request;
 
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
+import tmsystem.com.tmsystemdriver.data.models.MarkersEntity;
+import tmsystem.com.tmsystemdriver.data.models.ServicioEntity;
 
 /**
  * Created by katherine on 12/06/17.
@@ -17,6 +21,14 @@ public interface GetRequest {
     @GET("api/AppAsociado/GetEstado")
     Call<EstadoResponse> getEstado(@Header("Authorization") String token,
                                    @Query("IdAsociado") int id);
+
+    @GET("api/AppAsociado/GetServicios")
+    Call<ServicioEntity> getServicio(@Header("Authorization") String token,
+                                     @Query("IdReserva") int id);
+
+    @GET("api/AppAsociado/GetServiciosRuta")
+    Call<ArrayList<MarkersEntity>> getServicioUbication(@Header("Authorization") String token,
+                                                        @Query("IdReserva") int id);
     //@GET("subcategory/list")
     //Call<TrackEntityHolder<SubCatEntity>> getCategories(@Header("Authorization") String token,
      //                                                   @Query("page") int numberPage);

@@ -10,6 +10,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -34,6 +36,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -44,7 +48,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,8 +65,9 @@ import tmsystem.com.tmsystemdriver.R;
 import tmsystem.com.tmsystemdriver.core.BaseFragment;
 import tmsystem.com.tmsystemdriver.data.local.SessionManager;
 import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
+import tmsystem.com.tmsystemdriver.data.models.MarkersEntity;
 import tmsystem.com.tmsystemdriver.data.models.SendEstado;
-import tmsystem.com.tmsystemdriver.presentation.asignacion.AsignacionActivity;
+import tmsystem.com.tmsystemdriver.data.models.ServicioEntity;
 import tmsystem.com.tmsystemdriver.presentation.asignacion.AsignacionServicioActivity;
 import tmsystem.com.tmsystemdriver.utils.PermissionUtils;
 
@@ -73,20 +85,28 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     public static final String ACTION_NOTIFY_NEW_PROMO = "NOTIFY_NEW_PROMO";
+    @BindView(R.id.acccion_requisitos)
+    FloatingActionButton acccionRequisitos;
+    @BindView(R.id.accion_costos)
+    FloatingActionButton accionCostos;
+    @BindView(R.id.accion_seguimiento)
+    FloatingActionButton accionSeguimiento;
+    @BindView(R.id.floating_menu)
+    FloatingActionsMenu floatingMenu;
     private BroadcastReceiver mNotificationsReceiver;
 
 
-    public static  final int DISPO = 1;
-    public static  final int NO_DISPO = 2;
+    public static final int DISPO = 1;
+    public static final int NO_DISPO = 2;
 
 
-    public static  final String DISPONIBLE = "DISPONIBLE";
-    public static  final String NO_DISPONIBLE = "NO DISPONIBLE";
-    public static  final String CAMINO_AL_SERVICIO = "CAMINO AL SERVICIO";
-    public static  final String EN_EL_PUNTO = "EN EL PUNTO";
-    public static  final String USUARIO_CONTACTADO = "USUARIO CONTACTADO";
-    public static  final String SERVICIO_EN_PROCESO = "SERVICIO EN PROCESO";
-    public static  final String SERVICIO_FINALIZADO = "SERVICIO FINALIZADO";
+    public static final String DISPONIBLE = "DISPONIBLE";
+    public static final String NO_DISPONIBLE = "NO DISPONIBLE";
+    public static final String CAMINO_AL_SERVICIO = "CAMINO AL SERVICIO";
+    public static final String EN_EL_PUNTO = "EN EL PUNTO";
+    public static final String USUARIO_CONTACTADO = "USUARIO CONTACTADO";
+    public static final String SERVICIO_EN_PROCESO = "SERVICIO EN PROCESO";
+    public static final String SERVICIO_FINALIZADO = "SERVICIO FINALIZADO";
 
 
     @BindView(R.id.btn_estado)
@@ -99,7 +119,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     @BindView(R.id.mySwitch)
     Switch mySwitch;
 
-    private AlertDialog dialogogps, dialogDisponible,alertverficaversion;
+    private AlertDialog dialogogps, dialogDisponible, alertverficaversion;
     private LocationManager locationManager;
     private String provider;
     GoogleApiClient googleApiClient;
@@ -121,6 +141,10 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
     private int idEstado;
     private int nextEstado;
+    private int idReserva;
+
+
+    private ServicioEntity serEntity;
 
     public MainFragment() {
         // Requires empty public constructor
@@ -216,12 +240,12 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 if (isChecked) {
                     SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), DISPO);
                     mPresenter.sendEstado(sendEstado);
-                   // Toast.makeText(getContext(), "Seleccionado", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getContext(), "Seleccionado", Toast.LENGTH_SHORT).show();
 
                 } else {
                     SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), NO_DISPO);
                     mPresenter.sendEstado(sendEstado);
-                   // Toast.makeText(getContext(), "No seleccionado", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getContext(), "No seleccionado", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -230,7 +254,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
-            String channelId  = getString(R.string.default_notification_channel_id);
+            String channelId = getString(R.string.default_notification_channel_id);
             String channelName = getString(R.string.default_notification_channel_name);
             NotificationManager notificationManager =
                     getActivity().getSystemService(NotificationManager.class);
@@ -239,20 +263,18 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         }
 
 
-
-
     }
 
-    public void validarEstadoDisponible(int estado){
+    public void validarEstadoDisponible(int estado) {
 
         switch (estado) {
             case 1:
-                UiServicio(DISPONIBLE, DISPONIBLE, false, true, true, false );
+                UiServicio(DISPONIBLE, DISPONIBLE, false, true, true, false);
                 mySwitch.setChecked(true);
                 break;
 
             case 2:
-                UiServicio(NO_DISPONIBLE, NO_DISPONIBLE, false, true, true, false );
+                UiServicio(NO_DISPONIBLE, NO_DISPONIBLE, false, true, true, false);
                 break;
 
             case 3:
@@ -261,107 +283,113 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 break;
             case 4:
                 // A MI DOMICILIO 4
-
                 break;
+
             case 5:
                 //SUSPENSION TEMPORAL 5
                 String msg = "SUSPENCIÓN TEMPORAL";
                 mySwitch.setClickable(false);
                 alertaNodisponible(msg);
                 break;
+
             case 6:
                 //SUSPENSION DEFINITIVA 6
                 String msg1 = "SUSPENSIÓN DEFINITIVA";
                 mySwitch.setClickable(false);
                 alertaNodisponible(msg1);
                 break;
+
             case 7:
                 //PERMISO TEMPORAL 7
                 String msg2 = "PERMISO TEMPORAL";
                 mySwitch.setClickable(false);
                 alertaNodisponible(msg2);
                 break;
+
             case 8:
                 //LLAMADO A BASE 8
                 String msg3 = "LLAMADO A BASE";
                 mySwitch.setClickable(false);
                 alertaNodisponible(msg3);
-
                 break;
+
             case 9:
                 //SERVICIO PENDIENTE DE ASIGNACION
                 mPresenter.getEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado());
-
                 break;
+
             case 10:
                 //10 ASIGNACION MANUAL
                 nextActivity(getActivity(), null, AsignacionServicioActivity.class, true);
-                UiServicio(DISPONIBLE,"TOMAR SERVICIO",true , false, false, true);
+                UiServicio(DISPONIBLE, "TOMAR SERVICIO", true, false, false, true);
                 btnEstado.setBackgroundColor(getResources().getColor(R.color.green));
-
                 break;
+
             case 11:
                 //11 ASIGNACION AUTOMATICA
                 nextActivity(getActivity(), null, AsignacionServicioActivity.class, true);
-                UiServicio(DISPONIBLE,"TOMAR SERVICIO",true , false, false, true);
+                UiServicio(DISPONIBLE, "TOMAR SERVICIO", true, false, false, true);
                 btnEstado.setBackgroundColor(getResources().getColor(R.color.green));
-
                 break;
+
             case 12:
                 //12 CAMINO AL SERVICIO
                 UiServicio(CAMINO_AL_SERVICIO, EN_EL_PUNTO, true, false, false, true);
-                nextEstado = estado +1;
-
+                nextEstado = estado + 1;
+                floatingMenu.setVisibility(View.VISIBLE);
+                mPresenter.getServicio(idReserva);
+                mPresenter.getMarkers(idReserva);
                 break;
+
             case 13:
                 //13 EN EL PUNTO
-                UiServicio(EN_EL_PUNTO, USUARIO_CONTACTADO, true,false,false,true);
-                nextEstado = estado +1;
+                UiServicio(EN_EL_PUNTO, USUARIO_CONTACTADO, true, false, false, true);
+                nextEstado = estado + 1;
                 // nextEstado = 14;
-
                 break;
+
             case 14:
                 //14 USUARIO CONTACTADO11
-                UiServicio(USUARIO_CONTACTADO, SERVICIO_EN_PROCESO,  true,false,false,true);
-                nextEstado = estado +1;
+                UiServicio(USUARIO_CONTACTADO, SERVICIO_EN_PROCESO, true, false, false, true);
+                nextEstado = estado + 1;
                 //nextEstado = 15;
-
                 break;
+
             case 15:
                 //15 SERVICIO EN PROCESO
-                UiServicio(SERVICIO_EN_PROCESO, "FINALIZAR SERVICIO", true,false,false,true);
-                nextEstado = estado +1;
+                UiServicio(SERVICIO_EN_PROCESO, "FINALIZAR SERVICIO", true, false, false, true);
+                nextEstado = estado + 1;
                 //nextEstado = 16;
-
                 break;
+
             case 16:
                 //16 SERVICIO FINALIZADO
-                UiServicio(SERVICIO_FINALIZADO,"PONERME DISPONIBLE", true,false,false,true);
+                UiServicio(SERVICIO_FINALIZADO, "PONERME DISPONIBLE", true, false, false, true);
                 nextEstado = 1;
                 break;
         }
 
     }
 
-    public void UiServicio(String nombreServicio, String nombreBoton, boolean btnClick, boolean unlock, boolean switchVisible, boolean btnVisible){
+    public void UiServicio(String nombreServicio, String nombreBoton, boolean btnClick, boolean unlock, boolean switchVisible, boolean btnVisible) {
 
         tvConectado.setText(nombreServicio);
 
-        if(switchVisible){
+        if (switchVisible) {
             mySwitch.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mySwitch.setVisibility(View.GONE);
         }
 
-        if(unlock){
+        if (unlock) {
             mainInterface.unlockDrawer();
-        }else {
+        } else {
             mainInterface.lockDrawer();
         }
 
-        if(btnVisible){
+        if (btnVisible) {
             btnEstado.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             btnEstado.setVisibility(View.GONE);
         }
 
@@ -376,7 +404,6 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         // (the camera animates to the user's current position).
         return false;
     }
-
 
 
     @Override
@@ -407,6 +434,8 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
+
+        // mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(LayoutInflater.from(getActivity())));
     }
 
     private void enableMyLocation() {
@@ -500,14 +529,14 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         dialogogps.show();
     }
 
-    public void alertaNodisponible(String msg){
+    public void alertaNodisponible(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Atención");
         builder.setMessage("Usted se encuentra con " + msg + " no podrá marcarse como disponible hasta que regularice su situaciión");
         builder.setCancelable(false);
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {
-               dialogDisponible.dismiss();
+                dialogDisponible.dismiss();
             }
         });
         dialogDisponible = builder.create();
@@ -531,28 +560,51 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
         // Creating a LatLng object for the current location
 
-
         // getZona(latitude, longitude);
 
         if (visualizamovil == 0) {
             mMap.clear();
             mMap.addMarker(new MarkerOptions()
                     .position(latLng)
-
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_place)));
-
-
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ybtnmmovil)));
             // Showing the current location in Google Map
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-
             // Zoom in the Google Map
             mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-
             int speed = (int) ((location.getSpeed() * 3600) / 1000);
         }
 
+        if (serEntity != null) {
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    DialogInfoWindow dialogInfoWindow = new DialogInfoWindow(getContext(), serEntity);
+                    dialogInfoWindow.show();
+                    return false;
+                }
+            });
+        }
+
     }
+
+
+    protected Bitmap doInBackground(String src) {
+        try {
+            URL url = new URL(src);
+            InputStream is = url.openConnection().getInputStream();
+            Bitmap bitMap = BitmapFactory.decodeStream(is);
+            return bitMap;
+
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(getContext())
@@ -598,6 +650,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     public void getEstado(EstadoResponse estadoResponse) {
 
         idEstado = estadoResponse.getIdEstado();
+        idReserva = estadoResponse.getIdReserva();
         validarEstadoDisponible(idEstado);
 
         //btnEstado.setText(estadoResponse.getDesestado());
@@ -607,10 +660,28 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     @Override
     public void sendEstadoResponse(String estado) {
         mPresenter.getEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado());
-
         //tvConectado.setText("DISPONIBLE");
+    }
+
+    @Override
+    public void sendServicioResponse(ServicioEntity servicioEntity) {
+        serEntity = servicioEntity;
 
     }
+
+    @Override
+    public void sendMarkers(ArrayList<MarkersEntity> list) {
+
+    }
+
+    @Override
+    public void sendMarker(MarkersEntity markersEntity) {
+        LatLng latLngDestino = new LatLng(Double.valueOf(markersEntity.getLatitude()), Double.valueOf(markersEntity.getLongitude()));
+
+        Marker myMarker = mMap.addMarker(new MarkerOptions()
+                .position(latLngDestino)
+                .snippet(markersEntity.getDireccionReal())
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_costos)));    }
 
     @Override
     public boolean isActive() {

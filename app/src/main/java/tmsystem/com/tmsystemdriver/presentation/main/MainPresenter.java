@@ -3,12 +3,16 @@ package tmsystem.com.tmsystemdriver.presentation.main;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tmsystem.com.tmsystemdriver.data.local.SessionManager;
 import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
+import tmsystem.com.tmsystemdriver.data.models.MarkersEntity;
 import tmsystem.com.tmsystemdriver.data.models.SendEstado;
+import tmsystem.com.tmsystemdriver.data.models.ServicioEntity;
 import tmsystem.com.tmsystemdriver.data.remote.ServiceFactory;
 import tmsystem.com.tmsystemdriver.data.remote.request.GetRequest;
 import tmsystem.com.tmsystemdriver.data.remote.request.PostRequest;
@@ -85,7 +89,6 @@ public class MainPresenter implements MainContract.Presenter {
                 if (response.isSuccessful()) {
                     mView.sendEstadoResponse(response.body().getDesestado());
                     mView.showMessage("envio");
-
                     //openSession(token, response.body());
 
                 } else {
@@ -96,6 +99,81 @@ public class MainPresenter implements MainContract.Presenter {
 
             @Override
             public void onFailure(Call<EstadoResponse> call, Throwable t) {
+                if (!mView.isActive()) {
+                    return;
+                }
+                mView.setLoadingIndicator(false);
+                mView.showErrorMessage("Fallo al traer datos, comunicarse con su administrador");
+            }
+        });
+    }
+
+    @Override
+    public void getServicio(int id) {
+        GetRequest postRequest =
+                ServiceFactory.createService(GetRequest.class);
+        Call<ServicioEntity> call = postRequest.getServicio("bearer "+ mSessionManager.getUserToken(), id);
+        call.enqueue(new Callback<ServicioEntity>() {
+            @Override
+            public void onResponse(Call<ServicioEntity> call, Response<ServicioEntity> response) {
+                if (!mView.isActive()) {
+                    return;
+                }
+
+                if (response.isSuccessful()) {
+                    mView.sendServicioResponse(response.body());
+                    mView.showMessage("datos completados");
+
+                    //openSession(token, response.body());
+
+                } else {
+                    mView.setLoadingIndicator(false);
+                    mView.showErrorMessage("Ocurrió un error al obtener su estado");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServicioEntity> call, Throwable t) {
+                if (!mView.isActive()) {
+                    return;
+                }
+                mView.setLoadingIndicator(false);
+                mView.showErrorMessage("Fallo al traer datos, comunicarse con su administrador");
+            }
+        });
+
+    }
+
+    @Override
+    public void getMarkers(int id) {
+        GetRequest postRequest =
+                ServiceFactory.createService(GetRequest.class);
+        Call<ArrayList<MarkersEntity>> call = postRequest.getServicioUbication("bearer "+ mSessionManager.getUserToken(), id);
+        call.enqueue(new Callback<ArrayList<MarkersEntity>>() {
+            @Override
+            public void onResponse(Call<ArrayList<MarkersEntity>> call, Response<ArrayList<MarkersEntity>> response) {
+                if (!mView.isActive()) {
+                    return;
+                }
+
+                if (response.isSuccessful()) {
+                    if(response.body().size()>1){
+                        mView.sendMarkers(response.body());
+                    }else {
+                        mView.sendMarker(response.body().get(0));
+                    }
+                    mView.showMessage("markers completos");
+
+                    //openSession(token, response.body());
+
+                } else {
+                    mView.setLoadingIndicator(false);
+                    mView.showErrorMessage("Ocurrió un error al obtener su estado");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<MarkersEntity>> call, Throwable t) {
                 if (!mView.isActive()) {
                     return;
                 }

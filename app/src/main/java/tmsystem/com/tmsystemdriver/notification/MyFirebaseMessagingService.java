@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import tmsystem.com.tmsystemdriver.R;
+import tmsystem.com.tmsystemdriver.presentation.asignacion.AsignacionServicioActivity;
 import tmsystem.com.tmsystemdriver.presentation.main.MainFragment;
 import tmsystem.com.tmsystemdriver.presentation.main.PrincipalActivity;
 
@@ -43,8 +44,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
         Log.d(TAG, "¡Mensaje recibido!");
-        displayNotification(remoteMessage.getNotification(), remoteMessage.getData());
-        sendNewPromoBroadcast(remoteMessage);
+        //displayNotification(remoteMessage.getNotification(), remoteMessage.getData());
+        //sendNewPromoBroadcast(remoteMessage);
 
         // [START_EXCLUDE]
         // There are two types of messages data messages and notification messages. Data messages are handled
@@ -58,19 +59,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-   /*     Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Log.d(TAG, "From: " + remoteMessage.getFrom());
         Map<String, String> data = remoteMessage.getData();
         String message = data.get("message");
         String title = data.get("title");
-        displayNotification( message, title);*/
-        //Integer condition = Integer.parseInt(data.get("condition"));
+        displayNotification( message, title);
+        Integer condition = Integer.parseInt(data.get("condition"));
 
-       /* if(condition != null){
+        if(condition != null){
             switch (condition){
                 case 1:
-
                     displayNotification(message,title);
-                    startActivity(new Intent(this, PrincipalActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    startActivity(new Intent(this, AsignacionServicioActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     break;
                 case 2:
 
@@ -80,62 +80,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case 3:
                     displayNotification(message,title);
                     startActivity(new Intent(this, PrincipalActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-            }*/
-        }
-
-
-        // Check if message contains a data payload.
-       /* if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
-            if (*//* Check if data needs to be processed by long running job *//* true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-                scheduleJob();
-            } else {
-                // Handle message within 10 seconds
-                handleNow();
             }
-
-        }*/
-
-        // Check if message contains a notification payload.
-       /* if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            //sendNotification("MENSAJE");
-            sendNotification("MENSAJE");
         }
-*/
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
-
-    // [END receive_message]
-
-    /**
-     * Schedule a job using FirebaseJobDispatcher.
-     */
- /*   private void scheduleJob() {
-        // [START dispatch_job]
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
-        Job myJob = dispatcher.newJobBuilder()
-                .setService(MyJobService.class)
-                .setTag("my-job-tag")
-                .build();
-        dispatcher.schedule(myJob);
-        // [END dispatch_job]
-    }*/
-
-    /**
-     * Handle time allotted to BroadcastReceivers.
-     */
-    private void handleNow() {
-        Log.d(TAG, "Short lived task is done.");
     }
 
-    /**
-     * Create and show a simple notification containing the received FCM message.
-     *
-     * @param messageBody FCM message body received.
-     */
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, PrincipalActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -198,17 +146,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
 
     }
-    private void sendNewPromoBroadcast(RemoteMessage remoteMessage) {
-        Intent intent = new Intent(MainFragment.ACTION_NOTIFY_NEW_PROMO);
-        intent.putExtra("title", remoteMessage.getNotification().getTitle());
-        intent.putExtra("description", remoteMessage.getNotification().getBody());
-        intent.putExtra("expiry_date", remoteMessage.getData().get("expiry_date"));
-        intent.putExtra("discount", remoteMessage.getData().get("discount"));
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .sendBroadcast(intent);
-    }
 
-    private void displayNotification(RemoteMessage.Notification notification, Map<String, String> data) {
+    /*  private void displayNotification(RemoteMessage.Notification notification, Map<String, String> data) {
         Intent intent = new Intent(this, PrincipalActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
@@ -227,10 +166,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0, notificationBuilder.build());
-    }
+        notificationManager.notify(0, notificationBuilder.build());*/
 
- /*   private void displayNotification(String message, String title) {
+
+  private void displayNotification(String message, String title) {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -246,5 +185,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, notificationBuilder.build());
-    }*/
+    }
 }
