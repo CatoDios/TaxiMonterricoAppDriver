@@ -29,6 +29,7 @@ import tmsystem.com.tmsystemdriver.R;
 import tmsystem.com.tmsystemdriver.core.BaseActivity;
 import tmsystem.com.tmsystemdriver.core.BaseFragment;
 import tmsystem.com.tmsystemdriver.data.local.SessionManager;
+import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
 import tmsystem.com.tmsystemdriver.data.models.SendEstado;
 import tmsystem.com.tmsystemdriver.presentation.auth.dialogs.DialogForgotPassword;
 import tmsystem.com.tmsystemdriver.presentation.main.PermisosActivity;
@@ -65,6 +66,8 @@ public class AsignacionFragment extends BaseFragment implements AsignacionContra
     private Handler handler = new Handler();
 
     Thread a = new Thread();
+
+    private int IdEstado;
 
 
     private AsignacionContract.Presenter mPresenter;
@@ -115,7 +118,7 @@ public class AsignacionFragment extends BaseFragment implements AsignacionContra
             @Override
             public void onActive() {
 
-                SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), CAMINO_AL_SERVICIO);
+                SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), CAMINO_AL_SERVICIO, IdEstado);
                 mPresenter.sendEstado(sendEstado);
                // nextActivity(getActivity(), null, PermisosActivity.class, true);
 
@@ -135,9 +138,7 @@ public class AsignacionFragment extends BaseFragment implements AsignacionContra
         myAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
         myAudioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 50, 0);
         myAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 50, 0);
-
         reproductorAudio = new ReproductorAudio();
-
         reproductorAudio.play(getActivity().getApplicationContext(), R.raw.serviciomensaje, false);
 
     }
@@ -207,7 +208,7 @@ public class AsignacionFragment extends BaseFragment implements AsignacionContra
 
                             if (pStatus==0)
                             {
-                                SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), NO_DISPONIBLE);
+                                SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), NO_DISPONIBLE, IdEstado);
                                 mPresenter.sendEstado(sendEstado);
                                 nextActivity(getActivity(), null, PermisosActivity.class, true);
                             }
@@ -249,6 +250,11 @@ public class AsignacionFragment extends BaseFragment implements AsignacionContra
         ((BaseActivity) getActivity()).showMessageError(message);
     }
 
+
+    @Override
+    public void getEstado(EstadoResponse estadoResponse) {
+        IdEstado = estadoResponse.getIdEstado();
+    }
 
     @Override
     public void sendEstadoResponse(String estado) {

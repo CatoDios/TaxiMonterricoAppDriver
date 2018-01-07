@@ -12,6 +12,7 @@ import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
 import tmsystem.com.tmsystemdriver.data.models.SendEstado;
 import tmsystem.com.tmsystemdriver.data.models.UserEntity;
 import tmsystem.com.tmsystemdriver.data.remote.ServiceFactory;
+import tmsystem.com.tmsystemdriver.data.remote.request.GetRequest;
 import tmsystem.com.tmsystemdriver.data.remote.request.LoginRequest;
 import tmsystem.com.tmsystemdriver.data.remote.request.PostRequest;
 
@@ -37,6 +38,39 @@ public class AsignacionPresenter implements AsignacionContract.Presenter {
     @Override
     public void start() {
 
+    }
+
+    @Override
+    public void getEstado(int id) {
+        GetRequest getRequest =
+                ServiceFactory.createService(GetRequest.class);
+        Call<EstadoResponse> call = getRequest.getEstado("bearer "+ mSessionManager.getUserToken(), id);
+        call.enqueue(new Callback<EstadoResponse>() {
+            @Override
+            public void onResponse(Call<EstadoResponse> call, Response<EstadoResponse> response) {
+                if (!mView.isActive()) {
+                    return;
+                }
+
+                if (response.isSuccessful()) {
+                    mView.getEstado(response.body());
+                    //openSession(token, response.body());
+
+                } else {
+                    mView.setLoadingIndicator(false);
+                    mView.showErrorMessage("Ocurrió un error al obtener su estado");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EstadoResponse> call, Throwable t) {
+                if (!mView.isActive()) {
+                    return;
+                }
+                mView.setLoadingIndicator(false);
+                mView.showErrorMessage("Fallo al traer datos, comunicarse con su administrador");
+            }
+        });
     }
 
     @Override

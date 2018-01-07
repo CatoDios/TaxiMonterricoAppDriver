@@ -64,10 +64,15 @@ import butterknife.Unbinder;
 import tmsystem.com.tmsystemdriver.R;
 import tmsystem.com.tmsystemdriver.core.BaseFragment;
 import tmsystem.com.tmsystemdriver.data.local.SessionManager;
+import tmsystem.com.tmsystemdriver.data.models.CostoTiempoEsperaResponse;
+import tmsystem.com.tmsystemdriver.data.models.CostosResponse;
 import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
 import tmsystem.com.tmsystemdriver.data.models.MarkersEntity;
+import tmsystem.com.tmsystemdriver.data.models.RequisitosResponse;
+import tmsystem.com.tmsystemdriver.data.models.SeguimientoResponse;
 import tmsystem.com.tmsystemdriver.data.models.SendEstado;
 import tmsystem.com.tmsystemdriver.data.models.ServicioEntity;
+import tmsystem.com.tmsystemdriver.data.models.ServicioPersonalEntity;
 import tmsystem.com.tmsystemdriver.presentation.asignacion.AsignacionServicioActivity;
 import tmsystem.com.tmsystemdriver.utils.PermissionUtils;
 
@@ -238,12 +243,12 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                                          boolean isChecked) {
 
                 if (isChecked) {
-                    SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), DISPO);
+                    SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), DISPO, idReserva);
                     mPresenter.sendEstado(sendEstado);
                     // Toast.makeText(getContext(), "Seleccionado", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), NO_DISPO);
+                    SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), NO_DISPO, idReserva);
                     mPresenter.sendEstado(sendEstado);
                     // Toast.makeText(getContext(), "No seleccionado", Toast.LENGTH_SHORT).show();
 
@@ -647,7 +652,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     }
 
     @Override
-    public void getEstado(EstadoResponse estadoResponse) {
+    public void getEstadoResponse(EstadoResponse estadoResponse) {
 
         idEstado = estadoResponse.getIdEstado();
         idReserva = estadoResponse.getIdReserva();
@@ -664,24 +669,55 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     }
 
     @Override
-    public void sendServicioResponse(ServicioEntity servicioEntity) {
+    public void getServicioResponse(ServicioEntity servicioEntity) {
         serEntity = servicioEntity;
 
     }
 
     @Override
-    public void sendMarkers(ArrayList<MarkersEntity> list) {
+    public void getMarkers(ArrayList<MarkersEntity> list) {
+        for (int i = 0; i <list.size() ; i++) {
+            /*Marker myMarker = mMap.addMarker(new MarkerOptions()
+                    .position(latLngDestino)
+                    .snippet(markersEntity.getDireccionReal())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_costos)));*/
+        }
 
     }
 
     @Override
-    public void sendMarker(MarkersEntity markersEntity) {
+    public void getMarker(MarkersEntity markersEntity) {
         LatLng latLngDestino = new LatLng(Double.valueOf(markersEntity.getLatitude()), Double.valueOf(markersEntity.getLongitude()));
 
         Marker myMarker = mMap.addMarker(new MarkerOptions()
                 .position(latLngDestino)
                 .snippet(markersEntity.getDireccionReal())
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_costos)));    }
+
+    @Override
+    public void getServicioPersonalResponse(ServicioPersonalEntity servicioPersonalEntity) {
+
+    }
+
+    @Override
+    public void getServSeguimientoResponse(SeguimientoResponse seguimientoResponse) {
+
+    }
+
+    @Override
+    public void getServRequisitosResponse(RequisitosResponse requisitosResponse) {
+
+    }
+
+    @Override
+    public void getServCostosResponse(CostosResponse costosResponse) {
+
+    }
+
+    @Override
+    public void getServCostosEsperaResponse(CostoTiempoEsperaResponse costoTiempoEsperaResponse) {
+
+    }
 
     @Override
     public boolean isActive() {
@@ -717,7 +753,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
     @OnClick(R.id.btn_estado)
     public void onViewClicked() {
-        SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), nextEstado);
+        SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), nextEstado, idReserva);
         mPresenter.sendEstado(sendEstado);
         //mainInterface.lockDrawer();
 

@@ -14,11 +14,13 @@ import tmsystem.com.tmsystemdriver.data.models.UserEntity;
 
 public interface AsignacionContract {
     interface View extends BaseView<Presenter> {
+        void getEstado(EstadoResponse estadoResponse);
         void sendEstadoResponse(String estado);
         boolean isActive();
     }
 
     interface Presenter extends BasePresenter {
+        void getEstado(int id);
         void sendEstado(SendEstado sendEstado);
 
 

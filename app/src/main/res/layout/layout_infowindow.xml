@@ -82,6 +82,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/content"
@@ -156,6 +157,44 @@
                 android:src="@drawable/ic_text_message"
                 android:background="@color/colorPrimaryDark" />
 
+        </LinearLayout>
+
+        <View
+            android:id="@+id/linea"
+            android:layout_below="@id/container"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+
+        <LinearLayout
+            android:layout_below="@id/linea"
+            android:layout_width="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:src="@drawable/ic_mail"
+                android:tint="@color/gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Observaciones"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="descripcion"/>
+            </LinearLayout>
         </LinearLayout>
 
 

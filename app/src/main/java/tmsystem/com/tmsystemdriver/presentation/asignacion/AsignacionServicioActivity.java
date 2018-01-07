@@ -23,6 +23,7 @@ import java.util.TimerTask;
 
 import tmsystem.com.tmsystemdriver.R;
 import tmsystem.com.tmsystemdriver.data.local.SessionManager;
+import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
 import tmsystem.com.tmsystemdriver.data.models.SendEstado;
 import tmsystem.com.tmsystemdriver.presentation.main.PermisosActivity;
 import tmsystem.com.tmsystemdriver.utils.ReproductorAudio;
@@ -45,6 +46,8 @@ public class AsignacionServicioActivity extends AppCompatActivity implements Asi
 
 
     private AudioManager myAudioManager;
+
+    private int idReserva;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +77,7 @@ public class AsignacionServicioActivity extends AppCompatActivity implements Asi
             @Override
             public void onActive() {
                  isSend = true;
-                SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), 12);
+                SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), 12, idReserva);
                 mPresenter.sendEstado(sendEstado);
                 // nextActivity(getActivity(), null, PermisosActivity.class, true);
 
@@ -115,7 +118,7 @@ public class AsignacionServicioActivity extends AppCompatActivity implements Asi
                             {
                                 if (!isSend){
 
-                                    SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), 2);
+                                    SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), 2, idReserva);
                                     mPresenter.sendEstado(sendEstado);
                                     startActivity(new Intent(getBaseContext(), PermisosActivity.class)
                                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
@@ -165,6 +168,12 @@ public class AsignacionServicioActivity extends AppCompatActivity implements Asi
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void getEstado(EstadoResponse estadoResponse) {
+        idReserva = estadoResponse.getIdReserva();
+
     }
 
     @Override

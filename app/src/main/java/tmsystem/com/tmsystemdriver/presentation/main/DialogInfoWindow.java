@@ -50,7 +50,8 @@ public class DialogInfoWindow extends AlertDialog {
         ButterKnife.bind(this, view);
         setView(view);
 
-        tvFecha.setText(String.valueOf(servicioEntity.getHoraReserva()));
+        tvFecha.setText(String.valueOf(servicioEntity.getFechaReserva()));
+        tvDistance.setText(String.valueOf(servicioEntity.getDistanciaReserva()));
 
 
 
