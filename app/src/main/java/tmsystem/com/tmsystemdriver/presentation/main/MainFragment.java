@@ -57,6 +57,9 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
+
+import javax.xml.transform.dom.DOMLocator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,7 +87,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        GoogleMap.OnMyLocationChangeListener, LocationListener, MainContract.View {
+        GoogleMap.OnMyLocationChangeListener, LocationListener, MainContract.View, GoogleMap.OnMarkerClickListener {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
@@ -133,7 +136,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     @BindView(R.id.mySwitch)
     Switch mySwitch;
 
-    private AlertDialog dialogogps, dialogDisponible, alertverficaversion;
+    private AlertDialog dialogogps, dialogDisponible, alertverficaversion, dialogErrorDistancia, dialogNoVale;
     private LocationManager locationManager;
     private String provider;
     GoogleApiClient googleApiClient;
@@ -156,6 +159,12 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     private int idEstado;
     private int nextEstado;
     private int idReserva;
+
+
+    private boolean navigation = false;
+
+    private Double getlatitude;
+    private Double getlongitude;
 
 
     private ServicioEntity serEntity;
@@ -250,7 +259,6 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-
                 if (isChecked) {
                     SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), DISPO, idReserva);
                     mPresenter.sendEstado(sendEstado);
@@ -260,9 +268,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                     SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), NO_DISPO, idReserva);
                     mPresenter.sendEstado(sendEstado);
                     // Toast.makeText(getContext(), "No seleccionado", Toast.LENGTH_SHORT).show();
-
                 }
-
             }
         });
 
@@ -314,12 +320,14 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 UiServicio(DISPONIBLE, DISPONIBLE, false, true, true, false);
                 mySwitch.setChecked(true);
                 floatingMenu.setVisibility(View.GONE);
+                mMap.clear();
                 break;
 
             case 2:
                 UiServicio(NO_DISPONIBLE, NO_DISPONIBLE, false, true, true, false);
                 floatingMenu.setVisibility(View.GONE);
                 mySwitch.setChecked(false);
+                mMap.clear();
                 break;
 
             case 3:
@@ -389,16 +397,21 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
             case 13:
                 //13 EN EL PUNTO
                 UiServicio(EN_EL_PUNTO, USUARIO_CONTACTADO, true, false, false, true);
+                mMap.clear();
                 nextEstado = estado + 1;
                 floatingMenu.setVisibility(View.VISIBLE);
+                mPresenter.getServicio(idReserva);
+                mPresenter.getMarkers(idReserva);
                 // nextEstado = 14;
                 break;
 
             case 14:
-                //14 USUARIO CONTACTADO11
+                //14 USUARIO CONTACTADO
                 UiServicio(USUARIO_CONTACTADO, SERVICIO_EN_PROCESO, true, false, false, true);
                 nextEstado = estado + 1;
                 floatingMenu.setVisibility(View.VISIBLE);
+                mPresenter.getServicio(idReserva);
+                mPresenter.getMarkers(idReserva);
 
                 //nextEstado = 15;
                 break;
@@ -408,6 +421,8 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 UiServicio(SERVICIO_EN_PROCESO, "FINALIZAR SERVICIO", true, false, false, true);
                 nextEstado = estado + 1;
                 floatingMenu.setVisibility(View.VISIBLE);
+                mPresenter.getServicio(idReserva);
+                mPresenter.getMarkers(idReserva);
                 //nextEstado = 16;
                 break;
 
@@ -485,6 +500,9 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
             mMap.setMyLocationEnabled(true);
         }
 
+        googleMap.setOnMarkerClickListener(this);
+
+
         // mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(LayoutInflater.from(getActivity())));
     }
 
@@ -527,7 +545,6 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 }
                 return;
             }
-
         }
     }
 
@@ -612,7 +629,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         // getZona(latitude, longitude);
 
         if (visualizamovil == 0) {
-            mMap.clear();
+           // mMap.clear();
             mMap.addMarker(new MarkerOptions()
                     .position(latLng)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ybtnmmovil)));
@@ -623,20 +640,6 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
             int speed = (int) ((location.getSpeed() * 3600) / 1000);
         }
 
-        if (serEntity != null) {
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-
-                    if(idEstado == 2 || idEstado == 1){
-                        DialogInfoWindow dialogInfoWindow = new DialogInfoWindow(getContext(), serEntity);
-                        dialogInfoWindow.show();
-                    }
-
-                    return false;
-                }
-            });
-        }
 
     }
 
@@ -704,21 +707,56 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         idEstado = estadoResponse.getIdEstado();
         idReserva = estadoResponse.getIdReserva();
         validarEstadoDisponible(idEstado);
-        //btnEstado.setText(estadoResponse.getDesestado());
 
     }
 
     @Override
     public void sendEstadoResponse(String msg) {
-        mPresenter.getEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado());
-        if(msg == "ERROR DISTANCIA") {
+        if (Objects.equals(msg, "ERROR DISTANCIA")){
             //ALERTA NO CAMBIA DE ESTADO
-            //mPresenter.getEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado());
+            alertaErrorDistancia();
         }
-        if(msg == "SIN VALE"){
+        if (Objects.equals(msg, "SIN VALE")) {
             // ALERTA QUE INGRESE SU VALE
+            alertaSinVale();
         }
+
+        mPresenter.getEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado());
+
     }
+
+    public void alertaSinVale() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Advertencia");
+        builder.setMessage("Por favor, registrar su número de vale ");
+        builder.setCancelable(false);
+        builder.setIcon(R.drawable.btnadvertencia);
+        builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", idReserva);
+                nextActivity(getActivity(), bundle, CostosActivity.class, false);
+            }
+        });
+        dialogNoVale = builder.create();
+        dialogNoVale.show();
+    }
+
+    public void alertaErrorDistancia() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Advertencia");
+        builder.setMessage("No se encuentra a la distancia permitida para ponerse 'EN EL PUNTO' ");
+        builder.setCancelable(false);
+        builder.setIcon(R.drawable.btnadvertencia);
+        builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+                dialogErrorDistancia.dismiss();
+            }
+        });
+        dialogErrorDistancia = builder.create();
+        dialogErrorDistancia.show();
+    }
+
 
     @Override
     public void getServicioResponse(ServicioEntity servicioEntity) {
@@ -728,10 +766,8 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
     @Override
     public void getMarkers(ArrayList<MarkersEntity> list) {
-        visualizamovil = 1;
         for (int i = 0; i < list.size(); i++) {
             LatLng latLngDestino = new LatLng(Double.valueOf(list.get(i).getLatitude()), Double.valueOf(list.get(i).getLongitude()));
-
             Marker myMarker = mMap.addMarker(new MarkerOptions()
                     .position(latLngDestino)
                     .snippet(list.get(i).getDireccionReal())
@@ -742,7 +778,6 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
     @Override
     public void getMarker(MarkersEntity markersEntity) {
-        visualizamovil = 1;
         LatLng latLngDestino = new LatLng(Double.valueOf(markersEntity.getLatitude()), Double.valueOf(markersEntity.getLongitude()));
 
         Marker myMarker = mMap.addMarker(new MarkerOptions()
@@ -755,11 +790,6 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     public void getServicioPersonalResponse(ServicioPersonalEntity servicioPersonalEntity) {
 
     }
-
-   /* @Override
-    public void getServSeguimientoResponse(SeguimientoResponse seguimientoResponse) {
-
-    }*/
 
     @Override
     public boolean isActive() {
@@ -809,5 +839,24 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement MyInterface");
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+        if (serEntity != null) {
+
+            getlatitude = marker.getPosition().latitude;
+            getlongitude = marker.getPosition().longitude;
+
+            Toast.makeText(getContext(), marker.getSnippet() + marker.getPosition().latitude + marker.getPosition().longitude, Toast.LENGTH_SHORT).show();
+
+            if (idEstado != 2 || idEstado != 1) {
+                DialogInfoWindow dialogInfoWindow = new DialogInfoWindow(getContext(), serEntity, getlatitude, getlongitude);
+                dialogInfoWindow.show();
+            }
+
+        }
+        return false;
     }
 }

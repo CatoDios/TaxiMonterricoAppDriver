@@ -355,6 +355,35 @@
 
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:id="@+id/content_cuatro"
+            android:layout_below="@id/content_tres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+
+            <ImageButton
+                android:id="@+id/btn_maps"
+                android:layout_margin="10dp"
+                android:layout_weight="0.5"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@color/gris"
+                android:src="@drawable/maps"/>
+
+            <ImageButton
+                android:id="@+id/btn_gps"
+                android:layout_margin="10dp"
+                android:layout_weight="0.5"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@color/gris"
+                android:src="@drawable/waze"/>
+
+        </LinearLayout>
 
 
 

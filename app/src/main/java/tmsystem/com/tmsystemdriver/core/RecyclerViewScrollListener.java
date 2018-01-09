@@ -25,8 +25,8 @@ public abstract class RecyclerViewScrollListener extends RecyclerView.OnScrollLi
 //        Log.i(TAG, "construct");
     }    // So TWO issues here.
 
-    // 1. When the data is refreshed, we need to change previousTotal to 0.
-    // 2. When we switch fragments and it loads itself from some place, for some
+    // a1. When the data is refreshed, we need to change previousTotal to a0.
+    // a2. When we switch fragments and it loads itself from some place, for some
     // reason gridLayoutManager returns stale data and hence re-assigning it every time.    @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();        visibleItemCount = recyclerView.getChildCount();

@@ -114,14 +114,14 @@ public class PermisosActivity extends AppCompatActivity {
                                      ParseException e) {
                         try {
                             if ((e == null) || (e.toString() == "")) {
-                                objects.get(0).put("installation_Id", VidInstallation);
-                                objects.get(0).put("status", 0);
-                                objects.get(0).saveInBackground();
+                                objects.get(a0).put("installation_Id", VidInstallation);
+                                objects.get(a0).put("status", a0);
+                                objects.get(a0).saveInBackground();
                             } else {
                                 if ((VidInstallation != null) || VidInstallation != "") {
-                                    objects.get(0).put("installation_Id", ParseInstallation.getCurrentInstallation().getInstallationId());
-                                    objects.get(0).put("status", 0);
-                                    objects.get(0).saveInBackground();
+                                    objects.get(a0).put("installation_Id", ParseInstallation.getCurrentInstallation().getInstallationId());
+                                    objects.get(a0).put("status", a0);
+                                    objects.get(a0).saveInBackground();
                                 }
                             }
                         } catch (Exception e2) {

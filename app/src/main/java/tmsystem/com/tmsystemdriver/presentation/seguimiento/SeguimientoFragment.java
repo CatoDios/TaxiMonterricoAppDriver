@@ -7,18 +7,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import tmsystem.com.tmsystemdriver.R;
 import tmsystem.com.tmsystemdriver.core.BaseActivity;
 import tmsystem.com.tmsystemdriver.core.BaseFragment;
+import tmsystem.com.tmsystemdriver.data.models.SeguimientoEntity;
 import tmsystem.com.tmsystemdriver.data.models.SeguimientoResponse;
 import tmsystem.com.tmsystemdriver.utils.ProgressDialogCustom;
 
@@ -37,6 +43,12 @@ public class SeguimientoFragment extends BaseFragment implements SeguimientoCont
     @BindView(R.id.noList)
     LinearLayout noList;
     Unbinder unbinder;
+    @BindView(R.id.tv_text)
+    EditText tvText;
+    @BindView(R.id.btn_send)
+    ImageButton btnSend;
+    @BindView(R.id.box_message)
+    LinearLayout boxMessage;
 
 
     private String daySelected;
@@ -46,6 +58,8 @@ public class SeguimientoFragment extends BaseFragment implements SeguimientoCont
     private ProgressDialogCustom mProgressDialogCustom;
 
     private int id;
+
+    private int id_otros;
 
     public SeguimientoFragment() {
         // Requires empty public constructor
@@ -118,6 +132,24 @@ public class SeguimientoFragment extends BaseFragment implements SeguimientoCont
     @Override
     public void clickItemSeguimiento(SeguimientoResponse seguimientoResponse) {
 
+        if(Objects.equals(seguimientoResponse.getDesseguimiento(), "OTROS")){
+            boxMessage.setVisibility(View.VISIBLE);
+            id_otros = seguimientoResponse.getIdSeguimiento();
+
+        }else {
+            SeguimientoEntity seguimientoEntity = new SeguimientoEntity();
+            seguimientoEntity.setIdReserva(id);
+            seguimientoEntity.setIdSeguimiento(seguimientoResponse.getIdSeguimiento());
+            seguimientoEntity.setObservaciones(" ");
+            mPresenter.sendSeguimiento(seguimientoEntity);
+        }
+
+
+    }
+
+    @Override
+    public void sendSeguimientoResponse(String msg) {
+        Toast.makeText(getContext(), "seguimiento envíado", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -160,6 +192,28 @@ public class SeguimientoFragment extends BaseFragment implements SeguimientoCont
     @Override
     public void showErrorMessage(String message) {
         ((BaseActivity) getActivity()).showMessageError(message);
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @OnClick(R.id.btn_send)
+    public void onViewClicked() {
+
+        if (tvText.getText().length() != 0){
+            SeguimientoEntity seguimiento_otros = new SeguimientoEntity();
+            seguimiento_otros.setIdReserva(id);
+            seguimiento_otros.setIdSeguimiento(id_otros);
+            seguimiento_otros.setObservaciones(tvText.getText().toString());
+            mPresenter.sendSeguimiento(seguimiento_otros);
+        }else {
+            Toast.makeText(getContext(), "No puede enviar un mensaje vacío", Toast.LENGTH_LONG).show();
+        }
+
 
     }
 }

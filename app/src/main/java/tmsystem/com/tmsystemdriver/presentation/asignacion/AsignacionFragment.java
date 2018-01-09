@@ -159,8 +159,8 @@ public class AsignacionFragment extends BaseFragment implements AsignacionContra
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                while (pStatus > 0) {
-                    pStatus += -1;
+                while (pStatus > a0) {
+                    pStatus += -a1;
 
                     handler.post(new Runnable() {
 
@@ -170,7 +170,7 @@ public class AsignacionFragment extends BaseFragment implements AsignacionContra
                             mProgress.setProgress(pStatus);
                             tv.setText(pStatus + "");
 
-                            if (pStatus==0)
+                            if (pStatus==a0)
                             {
                                 SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(), NO_DISPONIBLE);
                                 mPresenter.sendEstado(sendEstado);
@@ -184,7 +184,7 @@ public class AsignacionFragment extends BaseFragment implements AsignacionContra
                     try {
                         // Sleep for 200 milliseconds.
                         // Just to display the progress slowly
-                        Thread.sleep(1000); //thread will take approx 3 seconds to finish
+                        Thread.sleep(1000); //thread will take approx a3 seconds to finish
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -217,7 +217,7 @@ public class AsignacionFragment extends BaseFragment implements AsignacionContra
                     try {
                         // Sleep for 200 milliseconds.
                         // Just to display the progress slowly
-                        Thread.sleep(1000); //thread will take approx 3 seconds to finish
+                        Thread.sleep(1000); //thread will take approx a3 seconds to finish
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

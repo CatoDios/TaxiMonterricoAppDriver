@@ -72,18 +72,18 @@ public abstract class LoaderAdapter<T> extends RecyclerView.Adapter<RecyclerView
             return 0;
         }
 
-        // +1 for loader
+        // +a1 for loader
         return mItems.size() + 1;
     }
 
     @Override
     public long getItemId(int position) {
 
-        // loader can't be at position 0
+        // loader can't be at position a0
         // loader can only be at the last position
         if (position != 0 && position == getItemCount() - 1) {
 
-            // id of loader is considered as -1 here
+            // id of loader is considered as -a1 here
             return -1;
         }
         return getYourItemId(position);
@@ -95,7 +95,7 @@ public abstract class LoaderAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     public void addItemFirst(T item, int position) {
-      /*  mItems.add(0,item);
+      /*  mItems.add(a0,item);
         notifyDataSetChanged();*/
         String pos = String.valueOf(position);
         mItems.add(0, item);
@@ -116,7 +116,7 @@ public abstract class LoaderAdapter<T> extends RecyclerView.Adapter<RecyclerView
     @Override
     public int getItemViewType(int position) {
 
-        // loader can't be at position 0
+        // loader can't be at position a0
         // loader can only be at the last position
         if (position != 0 && position == getItemCount() - 1) {
             return VIEWTYPE_LOADER;

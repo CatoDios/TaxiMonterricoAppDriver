@@ -86,21 +86,6 @@ public class CostosFragment extends BaseFragment implements CostosContract.View 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_costos, container, false);
-
-       /* AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                HomeFragment fragment = new HomeFragment();
-                fragmentTransaction.replace(R.id.contentContainer_1, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
-        });*/
         unbinder = ButterKnife.bind(this, root);
 
         etTiempoEspera.addTextChangedListener(new TextWatcher() {
@@ -117,7 +102,11 @@ public class CostosFragment extends BaseFragment implements CostosContract.View 
             @Override
             public void afterTextChanged(Editable editable) {
                 String tiempo = etTiempoEspera.getText().toString();
-                if(Integer.valueOf(tiempo)!= 0 || Integer.valueOf(tiempo)!= null ){
+                if(tiempo.length() == 0){
+                    tiempo = "0";
+                }
+
+                if(Integer.valueOf(tiempo)!= 0 ){
                     mPresenter.getEperaTiempo(id, Integer.valueOf(tiempo));
                 }
             }
@@ -154,9 +143,6 @@ public class CostosFragment extends BaseFragment implements CostosContract.View 
         etRuta.setText(String.valueOf(costosResponse.getNRuta()));
         etRuta.setFocusable(false);
 
-        costoEntity = new CostoEntity(id,costosResponse.getNvale(),costosResponse.getPeaje(), costosResponse.getParqueo(),costosResponse.getEsperaTiempo(),costosResponse.getEsperaCosto());
-
-
     }
 
     @Override
@@ -166,10 +152,10 @@ public class CostosFragment extends BaseFragment implements CostosContract.View 
     }
 
     @Override
-    public void sendCostosResponse(CostoTiempoEsperaResponse costoTiempoEsperaResponse) {
+    public void sendCostosResponse(String msg) {
         mPresenter.getCostos(id);
+        etVale.setFocusable(false);
     }
-
 
     @Override
     public boolean isActive() {
@@ -220,8 +206,9 @@ public class CostosFragment extends BaseFragment implements CostosContract.View 
 
     @OnClick(R.id.btn_guardar)
     public void onViewClicked() {
-
-        mPresenter.sendCostos(costoEntity);
+        CostoEntity newCosto = new CostoEntity(id, etVale.getText().toString(), Double.valueOf(etPeaje.getText().toString()),Double.valueOf(etParqueo.getText().toString()),
+                Integer.valueOf(etTiempoEspera.getText().toString()),Double.valueOf(etParqueo.getText().toString()));
+        mPresenter.sendCostos(newCosto);
 
     }
 }

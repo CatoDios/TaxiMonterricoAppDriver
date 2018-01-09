@@ -19,7 +19,7 @@ public class CostosContract {
         void getDatosCostos(CostosResponse costosResponse);
         void getDatosEspera(CostoTiempoEsperaResponse costoTiempoEsperaResponse);
 
-        void sendCostosResponse(CostoTiempoEsperaResponse costoTiempoEsperaResponse);
+        void sendCostosResponse(String msg);
 
         boolean isActive();
     }

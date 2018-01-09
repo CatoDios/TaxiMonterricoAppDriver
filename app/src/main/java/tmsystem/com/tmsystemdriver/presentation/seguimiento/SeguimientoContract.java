@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import tmsystem.com.tmsystemdriver.core.BasePresenter;
 import tmsystem.com.tmsystemdriver.core.BaseView;
+import tmsystem.com.tmsystemdriver.data.models.SeguimientoEntity;
 import tmsystem.com.tmsystemdriver.data.models.SeguimientoResponse;
 
 /**
@@ -17,6 +18,8 @@ public class SeguimientoContract {
 
         void clickItemSeguimiento(SeguimientoResponse seguimientoResponse);
 
+        void sendSeguimientoResponse(String msg);
+
         boolean isActive();
     }
 
@@ -25,6 +28,8 @@ public class SeguimientoContract {
         void startLoad(int id);
 
         void getSeguimiento( int id);
+
+        void sendSeguimiento(SeguimientoEntity seguimientoEntity);
 
     }
 

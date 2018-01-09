@@ -136,7 +136,7 @@ public class AsignacionServicioActivity extends AppCompatActivity implements Asi
                     try {
                         // Sleep for 200 milliseconds.
                         // Just to display the progress slowly
-                        Thread.sleep(1000); //thread will take approx 3 seconds to finish
+                        Thread.sleep(1000); //thread will take approx a3 seconds to finish
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

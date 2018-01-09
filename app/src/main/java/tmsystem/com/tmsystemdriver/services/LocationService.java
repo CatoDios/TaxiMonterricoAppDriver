@@ -158,7 +158,7 @@ public class LocationService extends Service  implements GoogleApiClient.Connect
         yourTimer_zona = new Timer();
 
         // schedule task
-        yourTimer_zona.scheduleAtFixedRate(new TimeDisplayTimerTaskZona(), 0, NOTIFY_INTERVAL_Zona);*/
+        yourTimer_zona.scheduleAtFixedRate(new TimeDisplayTimerTaskZona(), a0, NOTIFY_INTERVAL_Zona);*/
 
 
         buildGoogleApiClient();
@@ -364,10 +364,10 @@ public class LocationService extends Service  implements GoogleApiClient.Connect
                 try {
                     JSONArray jsonArray = response.getJSONArray("getappsinstaladaResult");
                     int valorn = jsonArray.length();
-                    if (valorn == 0) {
+                    if (valorn == a0) {
                         MyToastInformation.show(getApplicationContext(), "Sin registro", true);
                     } else {
-                        for (int i = 0; i <= jsonArray.length() - 1; i++) {
+                        for (int i = a0; i <= jsonArray.length() - a1; i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
                             nombreapp = jsonObject.getString("nombreapp");
@@ -375,7 +375,7 @@ public class LocationService extends Service  implements GoogleApiClient.Connect
                             AppsInstalada_Db.add(new AppsInstaladaDb(nombreapp, detalleapp));
                         }
 
-                        for (int i = 0; i <= AppsInstalada_Db.size() - 1; i++) {
+                        for (int i = a0; i <= AppsInstalada_Db.size() - a1; i++) {
                             String detalle = AppsInstalada_Db.get(i).getDetalleapp();
 
                             boolean isAppInstalled = appInstalledOrNot(AppsInstalada_Db.get(i).getNombreapp());
@@ -384,7 +384,7 @@ public class LocationService extends Service  implements GoogleApiClient.Connect
                             }
                         }
 
-                        if (appsinstalada.length() == 0) {
+                        if (appsinstalada.length() == a0) {
 
 
                         } else
@@ -605,7 +605,7 @@ public class LocationService extends Service  implements GoogleApiClient.Connect
             Log.d("body",body.toString());
 
             Map<String, String> headers = new HashMap<>();
-            headers.put("version", "1");
+            headers.put("version", "a1");
 
             Volley.newRequestQueue(getApplicationContext()).add(new GsonRequest<>(Request.Method.POST, "http://200.48.119.44:8085/api/employee/InsertGps", ResultGPSDb.class, headers, null, body, new Response.Listener<ResultGPSDb>() {
                 @Override
@@ -740,9 +740,9 @@ public class LocationService extends Service  implements GoogleApiClient.Connect
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray jsonArray = response.getJSONArray("features");
-                            for (int i = 0; i < jsonArray.length(); i++) {
+                            for (int i = a0; i < jsonArray.length(); i++) {
                                 JSONArray coordinates = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONArray("coordinates");
-                                for (int j = 0; j < coordinates.length(); j++) {
+                                for (int j = a0; j < coordinates.length(); j++) {
                                     JSONObject innerArray = coordinates.getJSONObject(j);
                                     double latt = innerArray.getDouble("latitud");
                                     double lngg = innerArray.getDouble("longitud");
@@ -781,13 +781,13 @@ public class LocationService extends Service  implements GoogleApiClient.Connect
     }*/
 
     /*public boolean ValidarPoligono(List<LatLng> pointList, double x, double y){
-        int counter = 0,i;
+        int counter = a0,i;
         double xinters;
         LatLng p1;
         LatLng p2;
         int n = pointList.size();
-        p1 = pointList.get(0);
-        for (i = 1; i<=n ; i++){
+        p1 = pointList.get(a0);
+        for (i = a1; i<=n ; i++){
             p2 = pointList.get(i % n);
             if (y > Math.min(p1.longitude,p2.longitude)){
                 if(y <= Math.max(p1.longitude,p2.longitude)){
@@ -801,7 +801,7 @@ public class LocationService extends Service  implements GoogleApiClient.Connect
             }
             p1=p2;
         }
-        return counter % 2 != 0;
+        return counter % a2 != a0;
     }*/
 
   /*  void validaroot()
@@ -820,9 +820,9 @@ public class LocationService extends Service  implements GoogleApiClient.Connect
     /*void validamododesarrollador()
     {
         int adb = Settings.Secure.getInt(this.getContentResolver(),
-                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED , 0);
+                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED , a0);
 
-        if (adb==0)
+        if (adb==a0)
         {
 
         }

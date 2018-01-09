@@ -17,6 +17,8 @@ public class ServicioEntity implements Serializable {
     private String Nvale;
     private String Observaciones;
     private String DistanciaReserva;
+    private String rutainicio;
+    private String rutafinal;
     private String message;
 
     public String getDistanciaReserva() {
@@ -105,5 +107,21 @@ public class ServicioEntity implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getRutainicio() {
+        return rutainicio;
+    }
+
+    public void setRutainicio(String rutainicio) {
+        this.rutainicio = rutainicio;
+    }
+
+    public String getRutafinal() {
+        return rutafinal;
+    }
+
+    public void setRutafinal(String rutafinal) {
+        this.rutafinal = rutafinal;
     }
 }

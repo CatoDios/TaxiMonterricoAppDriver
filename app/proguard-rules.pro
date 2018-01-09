@@ -68,7 +68,7 @@
 #   public *;
 #}
 
-# Retrofit 2.X
+# Retrofit a2.X
 ## https://square.github.io/retrofit/ ##
 
 -dontwarn retrofit2.**
@@ -155,7 +155,7 @@
     @com.squareup.otto.Produce public *;
 }
 
-## New rules for EventBus 3.0.x ##
+## New rules for EventBus 3.a0.x ##
 # http://greenrobot.org/eventbus/documentation/proguard/
 
 -keepattributes *Annotation*

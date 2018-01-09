@@ -2,6 +2,7 @@ package tmsystem.com.tmsystemdriver.presentation.main;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -47,9 +48,16 @@ public class DialogInfoWindow extends AlertDialog {
     TextView tvPersona;
     @BindView(R.id.tv_hasta)
     TextView tvHasta;
+    @BindView(R.id.btn_maps)
+    ImageButton btnMaps;
+    @BindView(R.id.btn_gps)
+    ImageButton btnGps;
 
 
-    public DialogInfoWindow(Context context, ServicioEntity servicioEntity) {
+    private Double latitude, longitude;
+
+
+    public DialogInfoWindow(Context context, ServicioEntity servicioEntity, Double getlatitude, Double getlongitude) {
         super(context);
         LayoutInflater inflater = LayoutInflater.from(getContext());
         final View view = inflater.inflate(R.layout.layout_infowindow, null);
@@ -62,12 +70,16 @@ public class DialogInfoWindow extends AlertDialog {
         tvObservaciones.setText(servicioEntity.getObservaciones());
         tvVale.setText(servicioEntity.getNvale());
         tvPersona.setText(servicioEntity.getPersonalTraslado());
+        tvDesde.setText(servicioEntity.getRutainicio());
+        tvHasta.setText(servicioEntity.getRutafinal());
 
+        latitude = getlatitude;
+        longitude = getlongitude;
 
     }
 
 
-    @OnClick({R.id.btn_call, R.id.btn_message})
+    @OnClick({R.id.btn_call, R.id.btn_message,R.id.btn_maps,R.id.btn_gps})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_call:
@@ -87,11 +99,28 @@ public class DialogInfoWindow extends AlertDialog {
                 break;
 
             case R.id.btn_message:
-                Intent intent_message = new Intent(Intent.ACTION_CALL);
+                Intent intent_message = new Intent(Intent.ACTION_SEND);
                 intent_message.setData(Uri.parse("tel:992406360"));
                 view.getContext().startActivity(intent_message);
-
                 break;
+
+            case R.id.btn_maps:
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + latitude + "," + longitude));
+                getContext().startActivity(i);
+                break;
+
+            case R.id.btn_gps:
+                try {
+                    String url = "waze://?ll=" + latitude + "," + longitude + "&navigate=yes";
+                    getContext().startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse(url)));
+                } catch (ActivityNotFoundException ex) {
+                    Intent intent_waze =
+                            new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
+                    getContext().startActivity(intent_waze);
+                }
+                break;
+
         }
     }
 

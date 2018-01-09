@@ -5,6 +5,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import tmsystem.com.tmsystemdriver.data.models.CostoEntity;
 import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
 import tmsystem.com.tmsystemdriver.data.models.GpsEntity;
 import tmsystem.com.tmsystemdriver.data.models.SeguimientoEntity;
@@ -24,6 +25,10 @@ public interface PostRequest {
     @POST("api/AppAsociado/PostServiciosSeguimiento")
     Call<String> seguimiento(@Header("Authorization") String token,
                              @Body SeguimientoEntity seguimientoEntity);
+
+    @POST("api/AppAsociado/PostServiciosCostos")
+    Call<String> sendCostos(@Header("Authorization") String token,
+                            @Body CostoEntity costoEntity);
 
 
     @POST("api/AppAsociado/PostServiciosEnvioGPS")

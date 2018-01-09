@@ -14,6 +14,7 @@ import tmsystem.com.tmsystemdriver.data.models.CostosResponse;
 import tmsystem.com.tmsystemdriver.data.models.SeguimientoResponse;
 import tmsystem.com.tmsystemdriver.data.remote.ServiceFactory;
 import tmsystem.com.tmsystemdriver.data.remote.request.GetRequest;
+import tmsystem.com.tmsystemdriver.data.remote.request.PostRequest;
 
 /**
  * Created by kath on 08/01/18.
@@ -110,7 +111,36 @@ public class CostosPresenter implements CostosContract.Presenter {
 
     @Override
     public void sendCostos(CostoEntity costoEntity) {
+        PostRequest postRequest =
+                ServiceFactory.createService(PostRequest.class);
+        Call<String> call = postRequest.sendCostos("bearer "+ mSessionManager.getUserToken(), costoEntity);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (!mView.isActive()) {
+                    return;
+                }
 
+                if (response.isSuccessful()) {
+                    mView.sendCostosResponse(response.body());
+                   // mView.showMessage("envio");
+                    //openSession(token, response.body());
+
+                } else {
+                    mView.setLoadingIndicator(false);
+                   // mView.showErrorMessage("Ocurrió un error al enviar sus costos");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                if (!mView.isActive()) {
+                    return;
+                }
+                mView.setLoadingIndicator(false);
+               // mView.showErrorMessage("Fallo al traer datos, comunicarse con su administrador");
+            }
+        });
     }
 
     @Override

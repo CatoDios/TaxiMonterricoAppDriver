@@ -8,9 +8,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tmsystem.com.tmsystemdriver.data.local.SessionManager;
+import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
+import tmsystem.com.tmsystemdriver.data.models.SeguimientoEntity;
 import tmsystem.com.tmsystemdriver.data.models.SeguimientoResponse;
 import tmsystem.com.tmsystemdriver.data.remote.ServiceFactory;
 import tmsystem.com.tmsystemdriver.data.remote.request.GetRequest;
+import tmsystem.com.tmsystemdriver.data.remote.request.PostRequest;
 
 /**
  * Created by kath on 08/01/18.
@@ -76,6 +79,40 @@ public class SeguimientoPresenter implements SeguimientoContract.Presenter , Seg
                 }
                 mView.setLoadingIndicator(false);
                 mView.showErrorMessage("Fallo al traer datos, comunicarse con su administrador");
+            }
+        });
+    }
+
+    @Override
+    public void sendSeguimiento(SeguimientoEntity seguimientoEntity) {
+        PostRequest postRequest =
+                ServiceFactory.createService(PostRequest.class);
+        Call<String> call = postRequest.seguimiento("bearer "+ mSessionManager.getUserToken(), seguimientoEntity);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (!mView.isActive()) {
+                    return;
+                }
+
+                if (response.isSuccessful()) {
+                    mView.sendSeguimientoResponse(response.body());
+                    //mView.showMessage("envio");
+                    //openSession(token, response.body());
+
+                } else {
+                    mView.setLoadingIndicator(false);
+                  //  mView.showErrorMessage("Ocurrió un error al enviar su estado");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                if (!mView.isActive()) {
+                    return;
+                }
+                mView.setLoadingIndicator(false);
+                //mView.showErrorMessage("Fallo al traer datos, comunicarse con su administrador");
             }
         });
     }
