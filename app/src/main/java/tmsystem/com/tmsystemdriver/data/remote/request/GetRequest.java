@@ -40,11 +40,11 @@ public interface GetRequest {
                                                                  @Query("IdReserva") int id);
 
     @GET("api/AppAsociado/GetServiciosSeguimiento")
-    Call<SeguimientoResponse> getServicioSeguimiento(@Header("Authorization") String token,
-                                                     @Query("IdReserva") int id);
+    Call<ArrayList<SeguimientoResponse>> getServicioSeguimiento(@Header("Authorization") String token,
+                                             @Query("IdReserva") int id);
 
     @GET("api/AppAsociado/GetServiciosRequisitos")
-    Call<RequisitosResponse> getServicioRequisitos(@Header("Authorization") String token,
+    Call<ArrayList<RequisitosResponse>> getServicioRequisitos(@Header("Authorization") String token,
                                                     @Query("IdReserva") int id);
     @GET("api/AppAsociado/GetServiciosCostos")
     Call<CostosResponse> getServicioCostos(@Header("Authorization") String token,

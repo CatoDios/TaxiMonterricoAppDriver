@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import tmsystem.com.tmsystemdriver.R;
+import tmsystem.com.tmsystemdriver.services.LocationService;
 
 public class PermisosActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -56,7 +57,7 @@ public class PermisosActivity extends AppCompatActivity {
         } else {
 
            // Intent serviceIntentx = new Intent(this, LocationService.class);
-           // startService(serviceIntentx);
+            //startService(serviceIntentx);
 
             startActivity(new Intent(getBaseContext(), PrincipalActivity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));

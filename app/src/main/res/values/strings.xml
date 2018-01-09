@@ -25,6 +25,16 @@
     <string name="invited">Continuar como invitado</string>
     <string name="create_account">Crear una cuenta nueva</string>
 
+    //Costos strings
+    <string name="tipo_pago">Tipo de pago</string>
+    <string name="vale">N° Vale</string>
+    <string name="peaje">Peaje</string>
+    <string name="parqueo">Parqueo</string>
+    <string name="tiempo_espera">Tiempo de espera(min.)</string>
+    <string name="tiempo_espera_costo">Tiempo de espera(costo)</string>
+    <string name="tarifa">Tarifa</string>
+    <string name="rutas">N° ruta</string>
+
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>

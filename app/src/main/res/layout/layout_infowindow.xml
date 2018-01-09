@@ -20,10 +20,10 @@
                 android:layout_weight="0.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:tint="@color/gray"
                 android:src="@drawable/ic_fecha" />
 
             <LinearLayout
-
                 android:paddingTop="10dp"
                 android:layout_weight="2.5"
                 android:layout_width="0dp"
@@ -31,6 +31,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:textSize="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/gray"
@@ -58,16 +59,17 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:textSize="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/gray"
-                    android:text="Distancia" />
+                    android:text="Cliente" />
 
                 <TextView
-                    android:id="@+id/tv_distance"
+                    android:id="@+id/tv_cliente"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1.2 km"
+                    android:text="Taxi Monterrico"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -93,6 +95,7 @@
                 android:layout_weight="0.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:tint="@color/gray"
                 android:src="@drawable/ic_hora" />
 
             <LinearLayout
@@ -104,6 +107,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:textSize="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/gray"
@@ -120,10 +124,10 @@
             <ImageView
                 android:paddingTop="10dp"
                 android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.5"
-                android:src="@drawable/ic_marker1" />
+                android:tint="@color/gray"
+                android:src="@drawable/ic_facturacion" />
 
             <LinearLayout
                 android:paddingTop="10dp"
@@ -134,16 +138,17 @@
 
 
                 <TextView
+                    android:textSize="10dp"
                     android:textColor="@color/gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ubicación" />
+                    android:text="C. Costos" />
 
                 <TextView
-                    android:id="@+id/tv_ubicacion"
+                    android:id="@+id/tv_centro_costos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Faucett 234"
+                    android:text="Área de Sist."
                     android:textStyle="bold" />
 
 
@@ -155,7 +160,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:src="@drawable/ic_text_message"
-                android:background="@color/colorPrimaryDark" />
+                android:background="@color/colorPrimary" />
 
         </LinearLayout>
 
@@ -167,6 +172,7 @@
             android:background="@color/gray"/>
 
         <LinearLayout
+            android:id="@+id/observaciones"
             android:layout_below="@id/linea"
             android:layout_width="match_parent"
             android:layout_marginStart="10dp"
@@ -174,12 +180,14 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:src="@drawable/ic_mail"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_observaciones"
                 android:tint="@color/gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -188,14 +196,166 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="10dp"
+                    android:textColor="@color/gray"
                     android:text="Observaciones"/>
 
                 <TextView
+                    android:id="@+id/tv_observaciones"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="descripcion"/>
             </LinearLayout>
         </LinearLayout>
+
+        <View
+            android:layout_marginTop="5dp"
+            android:id="@+id/linea_dos"
+            android:layout_below="@id/observaciones"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+
+        <LinearLayout
+            android:id="@+id/content_dos"
+            android:layout_below="@id/linea_dos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="7">
+
+            <ImageView
+                android:paddingTop="10dp"
+                android:layout_weight="0.5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tint="@color/gray"
+                android:src="@drawable/ic_fecha" />
+
+            <LinearLayout
+                android:paddingTop="10dp"
+                android:layout_weight="2.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textSize="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray"
+                    android:text="@string/vale" />
+
+                <TextView
+                    android:id="@+id/tv_vale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="123456"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <ImageView
+                android:paddingTop="10dp"
+                android:layout_weight="0.5"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/marker_green" />
+
+            <LinearLayout
+                android:paddingTop="10dp"
+                android:layout_weight="2.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textSize="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray"
+                    android:text="Desde" />
+
+                <TextView
+                    android:id="@+id/tv_desde"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Faucett 234"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/content_tres"
+            android:layout_below="@id/content_dos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="7">
+
+            <ImageView
+                android:paddingTop="10dp"
+                android:layout_weight="0.5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tint="@color/gray"
+                android:src="@drawable/ic_user" />
+
+            <LinearLayout
+                android:paddingTop="10dp"
+                android:layout_weight="2.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textSize="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray"
+                    android:text="Persona a Trasladar" />
+
+                <TextView
+                    android:id="@+id/tv_persona"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="123456"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <ImageView
+                android:paddingTop="10dp"
+                android:layout_weight="0.5"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/marker_yellow3" />
+
+            <LinearLayout
+                android:paddingTop="10dp"
+                android:layout_weight="2.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textSize="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray"
+                    android:text="Hasta" />
+
+                <TextView
+                    android:id="@+id/tv_hasta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Faucett 234"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
 
 
 

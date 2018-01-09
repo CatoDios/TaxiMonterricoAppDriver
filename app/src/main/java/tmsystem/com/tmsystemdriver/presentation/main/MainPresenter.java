@@ -92,7 +92,7 @@ public class MainPresenter implements MainContract.Presenter {
                 }
 
                 if (response.isSuccessful()) {
-                    mView.sendEstadoResponse(response.body().getDesestado());
+                    mView.sendEstadoResponse(response.body().getMessage());
                     mView.showMessage("envio");
                     //openSession(token, response.body());
 
@@ -163,7 +163,7 @@ public class MainPresenter implements MainContract.Presenter {
 
                 if (response.isSuccessful()) {
                     if(response.body().size()>1){
-                        mView.getMarKers(response.body());
+                        mView.getMarkers(response.body());
                     }else {
                         mView.getMarker(response.body().get(0));
                     }
@@ -223,7 +223,7 @@ public class MainPresenter implements MainContract.Presenter {
         });
     }
 
-    @Override
+   /* @Override
     public void getServiciosSeguimiento(int id) {
         GetRequest postRequest =
                 ServiceFactory.createService(GetRequest.class);
@@ -256,79 +256,12 @@ public class MainPresenter implements MainContract.Presenter {
                 mView.showErrorMessage("Fallo al traer datos, comunicarse con su administrador");
             }
         });
-    }
+    }*/
 
-    @Override
-    public void getServiciosRequisitos(int id) {
-        GetRequest postRequest =
-                ServiceFactory.createService(GetRequest.class);
-        Call<RequisitosResponse> call = postRequest.getServicioRequisitos("bearer "+ mSessionManager.getUserToken(), id);
-        call.enqueue(new Callback<RequisitosResponse>() {
-            @Override
-            public void onResponse(Call<RequisitosResponse> call, Response<RequisitosResponse> response) {
-                if (!mView.isActive()) {
-                    return;
-                }
 
-                if (response.isSuccessful()) {
-                    mView.getServRequisitosResponse(response.body());
-                    mView.showMessage("requisitos");
 
-                    //openSession(token, response.body());
 
-                } else {
-                    mView.setLoadingIndicator(false);
-                    mView.showErrorMessage("Ocurrió un error al obtener los requisitos del servicio");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RequisitosResponse> call, Throwable t) {
-                if (!mView.isActive()) {
-                    return;
-                }
-                mView.setLoadingIndicator(false);
-                mView.showErrorMessage("Fallo al traer datos, comunicarse con su administrador");
-            }
-        });
-    }
-
-    @Override
-    public void getServiciosCostos(int id) {
-        GetRequest postRequest =
-                ServiceFactory.createService(GetRequest.class);
-        Call<CostosResponse> call = postRequest.getServicioCostos("bearer "+ mSessionManager.getUserToken(), id);
-        call.enqueue(new Callback<CostosResponse>() {
-            @Override
-            public void onResponse(Call<CostosResponse> call, Response<CostosResponse> response) {
-                if (!mView.isActive()) {
-                    return;
-                }
-
-                if (response.isSuccessful()) {
-                    mView.getServCostosResponse(response.body());
-                    mView.showMessage("costos");
-
-                    //openSession(token, response.body());
-
-                } else {
-                    mView.setLoadingIndicator(false);
-                    mView.showErrorMessage("Ocurrió un error al obtener los costos del servicio");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CostosResponse> call, Throwable t) {
-                if (!mView.isActive()) {
-                    return;
-                }
-                mView.setLoadingIndicator(false);
-                mView.showErrorMessage("Fallo al traer datos, comunicarse con su administrador");
-            }
-        });
-    }
-
-    @Override
+   /* @Override
     public void getServiciosCostosEspera(int id, int tiempo) {
         GetRequest postRequest =
                 ServiceFactory.createService(GetRequest.class);
@@ -361,5 +294,5 @@ public class MainPresenter implements MainContract.Presenter {
                 mView.showErrorMessage("Fallo al traer datos, comunicarse con su administrador");
             }
         });
-    }
+    }*/
 }

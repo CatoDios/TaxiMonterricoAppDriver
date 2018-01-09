@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="25dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <EditText
+                    android:id="@+id/et_tipo_pago"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/tipo_pago"
+                    android:imeOptions="actionNext"
+                    android:textSize="15dp"
+                    android:inputType="number"
+                    android:padding="10dp" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <EditText
+                    android:id="@+id/et_vale"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/vale"
+                    android:imeOptions="actionNext"
+                    android:textSize="15dp"
+                    android:inputType="number"
+                    android:padding="10dp" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <EditText
+                    android:id="@+id/et_peaje"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/peaje"
+                    android:textSize="15dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:padding="10dp" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <EditText
+                    android:id="@+id/et_parqueo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/parqueo"
+                    android:imeOptions="actionNext"
+                    android:textSize="15dp"
+                    android:inputType="number"
+                    android:padding="10dp" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <EditText
+                    android:id="@+id/et_tiempo_espera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/tiempo_espera"
+                    android:textSize="15dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:padding="10dp" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <EditText
+                    android:id="@+id/et_espera_costo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/tiempo_espera_costo"
+                    android:imeOptions="actionNext"
+                    android:textSize="15dp"
+                    android:inputType="number"
+                    android:padding="10dp" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <EditText
+                    android:id="@+id/et_tarifa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/tarifa"
+                    android:textSize="15dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:padding="10dp" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <EditText
+                    android:id="@+id/et_ruta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/rutas"
+                    android:imeOptions="actionNext"
+                    android:textSize="15dp"
+                    android:inputType="number"
+                    android:padding="10dp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_guardar"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_round_border_green"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:text="Guardar datos"/>
+
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</RelativeLayout>

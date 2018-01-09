@@ -26,12 +26,8 @@ public class MainContract {
         void getMarker(MarkersEntity markersEntity);
 
         void getServicioPersonalResponse(ServicioPersonalEntity servicioPersonalEntity);
-        void getServSeguimientoResponse(SeguimientoResponse seguimientoResponse);
-        void getServRequisitosResponse(RequisitosResponse requisitosResponse);
-        void getServCostosResponse(CostosResponse costosResponse);
-        void getServCostosEsperaResponse(CostoTiempoEsperaResponse costoTiempoEsperaResponse);
 
-        void sendEstadoResponse(String estado);
+        void sendEstadoResponse(String msg);
 
 
         boolean isActive();
@@ -43,10 +39,6 @@ public class MainContract {
         void getServicio(int id);
         void getMarkers(int id);
         void getServiciosPersonal(int id);
-        void getServiciosSeguimiento(int id);
-        void getServiciosRequisitos(int id);
-        void getServiciosCostos(int id);
-        void getServiciosCostosEspera(int id, int tiempo);
 
     }
 }

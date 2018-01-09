@@ -10,7 +10,6 @@ import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -24,23 +23,30 @@ import tmsystem.com.tmsystemdriver.data.models.ServicioEntity;
  */
 public class DialogInfoWindow extends AlertDialog {
 
-    @BindView(R.id.tv_fecha)
-    TextView tvFecha;
-    @BindView(R.id.tv_distance)
-    TextView tvDistance;
-    @BindView(R.id.btn_call)
-    ImageButton btnCall;
-    @BindView(R.id.content)
-    LinearLayout content;
-    @BindView(R.id.tv_hora)
-    TextView tvHora;
-    @BindView(R.id.tv_ubicacion)
-    TextView tvUbicacion;
-    @BindView(R.id.btn_message)
-    ImageButton btnMessage;
 
     String tlf;
-
+    @BindView(R.id.tv_fecha)
+    TextView tvFecha;
+    @BindView(R.id.tv_cliente)
+    TextView tvCliente;
+    @BindView(R.id.btn_call)
+    ImageButton btnCall;
+    @BindView(R.id.tv_hora)
+    TextView tvHora;
+    @BindView(R.id.tv_centro_costos)
+    TextView tvCentroCostos;
+    @BindView(R.id.btn_message)
+    ImageButton btnMessage;
+    @BindView(R.id.tv_observaciones)
+    TextView tvObservaciones;
+    @BindView(R.id.tv_vale)
+    TextView tvVale;
+    @BindView(R.id.tv_desde)
+    TextView tvDesde;
+    @BindView(R.id.tv_persona)
+    TextView tvPersona;
+    @BindView(R.id.tv_hasta)
+    TextView tvHasta;
 
 
     public DialogInfoWindow(Context context, ServicioEntity servicioEntity) {
@@ -50,9 +56,12 @@ public class DialogInfoWindow extends AlertDialog {
         ButterKnife.bind(this, view);
         setView(view);
 
-        tvFecha.setText(String.valueOf(servicioEntity.getFechaReserva()));
-        tvDistance.setText(String.valueOf(servicioEntity.getDistanciaReserva()));
-
+        tvFecha.setText(servicioEntity.getFechaReserva());
+        tvCliente.setText(servicioEntity.getCliente());
+        tvCentroCostos.setText(servicioEntity.getCentroCostos());
+        tvObservaciones.setText(servicioEntity.getObservaciones());
+        tvVale.setText(servicioEntity.getNvale());
+        tvPersona.setText(servicioEntity.getPersonalTraslado());
 
 
     }
@@ -85,4 +94,5 @@ public class DialogInfoWindow extends AlertDialog {
                 break;
         }
     }
+
 }

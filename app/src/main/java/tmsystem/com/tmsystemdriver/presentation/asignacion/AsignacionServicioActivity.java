@@ -50,6 +50,12 @@ public class AsignacionServicioActivity extends AppCompatActivity implements Asi
     private int idReserva;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.getEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_asignacion_servicio);
@@ -62,7 +68,6 @@ public class AsignacionServicioActivity extends AppCompatActivity implements Asi
 
         mPresenter = new AsignacionPresenter(this, getApplicationContext());
         mSessionManager = new SessionManager(getApplicationContext());
-
 
         myAudioManager = (AudioManager)getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         myAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);

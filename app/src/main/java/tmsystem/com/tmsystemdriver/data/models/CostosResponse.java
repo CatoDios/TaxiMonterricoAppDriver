@@ -11,11 +11,11 @@ public class CostosResponse implements Serializable {
     private String TipoPago;
     private  String Nvale;
     private int NRuta;
-    private float Peaje;
-    private float Parqueo;
+    private Double Peaje;
+    private Double Parqueo;
     private int EsperaTiempo;
-    private float EsperaCosto;
-    private float SubTotalRuta;
+    private Double EsperaCosto;
+    private Double SubTotalRuta;
     private String message;
 
     public String getTipoPago() {
@@ -42,19 +42,19 @@ public class CostosResponse implements Serializable {
         this.NRuta = NRuta;
     }
 
-    public float getPeaje() {
+    public Double getPeaje() {
         return Peaje;
     }
 
-    public void setPeaje(float peaje) {
+    public void setPeaje(Double peaje) {
         Peaje = peaje;
     }
 
-    public float getParqueo() {
+    public Double getParqueo() {
         return Parqueo;
     }
 
-    public void setParqueo(float parqueo) {
+    public void setParqueo(Double parqueo) {
         Parqueo = parqueo;
     }
 
@@ -66,19 +66,19 @@ public class CostosResponse implements Serializable {
         EsperaTiempo = esperaTiempo;
     }
 
-    public float getEsperaCosto() {
+    public Double getEsperaCosto() {
         return EsperaCosto;
     }
 
-    public void setEsperaCosto(float esperaCosto) {
+    public void setEsperaCosto(Double esperaCosto) {
         EsperaCosto = esperaCosto;
     }
 
-    public float getSubTotalRuta() {
+    public Double getSubTotalRuta() {
         return SubTotalRuta;
     }
 
-    public void setSubTotalRuta(float subTotalRuta) {
+    public void setSubTotalRuta(Double subTotalRuta) {
         SubTotalRuta = subTotalRuta;
     }
 
@@ -89,5 +89,4 @@ public class CostosResponse implements Serializable {
     public void setMessage(String message) {
         this.message = message;
     }
-
 }

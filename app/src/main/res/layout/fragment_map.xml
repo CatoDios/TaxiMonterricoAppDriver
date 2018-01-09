@@ -47,59 +47,248 @@
     </RelativeLayout>
 
 
-    <Button
-        android:id="@+id/btn_estado"
-        android:gravity="center"
-        android:background="@drawable/button_round_border_green"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_marginEnd="55dp"
-        android:layout_marginStart="5dp"
-        android:layout_height="35dp"
-        android:textColor="@color/White"
-        android:layout_marginBottom="15dp"
-        android:text="TOMAR SERVICIO"/>
 
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:visibility="gone"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/floating_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_mail"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="70dp"
-        app:fab_addButtonColorNormal="@color/colorPrimaryDark"
-        app:fab_addButtonColorPressed="@color/colorPrimary"
-        app:fab_addButtonSize="normal">
+        <RelativeLayout
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/acccion_requisitos"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_requisitos"
-            android:alpha="0.7"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimaryDark"
-            app:fab_size="mini"/>
+            <com.getbase.floatingactionbutton.FloatingActionsMenu
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/floating_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                app:fab_addButtonColorNormal="@color/colorPrimaryDark"
+                app:fab_addButtonColorPressed="@color/colorPrimary"
+                app:fab_addButtonSize="normal">
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/accion_costos"
-            android:alpha="0.7"
-            android:src="@drawable/ic_costos"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:backgroundTint="@color/colorPrimaryDark"
-            app:fab_size="mini" />
+                <com.getbase.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/acccion_requisitos"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_requisitos"
+                    android:alpha="0.7"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
+                    app:fab_size="mini"/>
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/accion_seguimiento"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_seguimiento"
-            android:alpha="0.7"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimaryDark"
-            app:fab_size="mini"/>
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+                <com.getbase.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/accion_costos"
+                    android:alpha="0.7"
+                    android:src="@drawable/ic_costos"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    app:fab_size="mini" />
+
+                <com.getbase.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/accion_seguimiento"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_seguimiento"
+                    android:alpha="0.7"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
+                    app:fab_size="mini"/>
+            </com.getbase.floatingactionbutton.FloatingActionsMenu>
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_margin="10dp"
+                android:layout_below="@id/floating_menu"
+                android:id="@+id/container_datos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/back_round_border_white"
+                android:weightSum="4">
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:tint="@color/gray"
+                        android:src="@drawable/ic_hora" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tiempo"
+                            android:textColor="@color/gray"
+                            android:textSize="10sp" />
+                        <TextView
+                            android:id="@+id/tv_tiempo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="23 min"
+                            android:textColor="@color/black"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_distancia" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Distancia"
+                            android:textColor="@color/gray"
+                            android:textSize="10sp" />
+                        <TextView
+                            android:textColor="@color/black"
+                            android:id="@+id/tv_distance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3.1 Km"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:padding="5dp"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:tint="@color/gray"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_marker1" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Destino"
+                            android:textColor="@color/gray"
+                            android:textSize="10sp" />
+                        <TextView
+                            android:id="@+id/tv_destino"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="Faucett 234"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:tint="@color/gray"
+                        android:src="@drawable/ic_costos" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ganancia"
+                            android:textColor="@color/gray"
+                            android:textSize="10sp" />
+                        <TextView
+                            android:id="@+id/tv_ganancia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="S/. 25.00"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+            <Button
+                android:layout_below="@id/container_datos"
+                android:id="@+id/btn_estado"
+                android:gravity="center"
+                android:background="@drawable/button_round_border_green"
+                android:layout_width="280dp"
+                android:layout_marginStart="10dp"
+                android:layout_height="35dp"
+                android:textColor="@color/White"
+                android:layout_marginBottom="15dp"
+                android:text="TOMAR SERVICIO"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_below="@id/container_datos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+                <Button
+                    android:layout_weight="0.9"
+                    android:gravity="center"
+                    android:background="@drawable/button_round_border_green"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_height="35dp"
+                    android:textColor="@color/White"
+                    android:layout_marginBottom="15dp"
+                    android:text="TOMAR SERVICIO"/>
+
+                <ImageButton
+                    android:layout_weight="0.1"
+                    android:layout_width="wrap_content"
+                    android:background="@drawable/button_round_border_green"
+                    android:layout_marginStart="5dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_action_add"/>
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+
+
+
 
 </RelativeLayout>

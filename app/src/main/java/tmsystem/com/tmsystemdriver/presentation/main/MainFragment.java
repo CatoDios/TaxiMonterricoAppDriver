@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -64,16 +65,15 @@ import butterknife.Unbinder;
 import tmsystem.com.tmsystemdriver.R;
 import tmsystem.com.tmsystemdriver.core.BaseFragment;
 import tmsystem.com.tmsystemdriver.data.local.SessionManager;
-import tmsystem.com.tmsystemdriver.data.models.CostoTiempoEsperaResponse;
-import tmsystem.com.tmsystemdriver.data.models.CostosResponse;
 import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
 import tmsystem.com.tmsystemdriver.data.models.MarkersEntity;
-import tmsystem.com.tmsystemdriver.data.models.RequisitosResponse;
-import tmsystem.com.tmsystemdriver.data.models.SeguimientoResponse;
 import tmsystem.com.tmsystemdriver.data.models.SendEstado;
 import tmsystem.com.tmsystemdriver.data.models.ServicioEntity;
 import tmsystem.com.tmsystemdriver.data.models.ServicioPersonalEntity;
 import tmsystem.com.tmsystemdriver.presentation.asignacion.AsignacionServicioActivity;
+import tmsystem.com.tmsystemdriver.presentation.costos.CostosActivity;
+import tmsystem.com.tmsystemdriver.presentation.seguimiento.SeguimientoActivity;
+import tmsystem.com.tmsystemdriver.presentation.requisitos.RequisitosActivity;
 import tmsystem.com.tmsystemdriver.utils.PermissionUtils;
 
 /**
@@ -89,7 +89,6 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
-    public static final String ACTION_NOTIFY_NEW_PROMO = "NOTIFY_NEW_PROMO";
     @BindView(R.id.acccion_requisitos)
     FloatingActionButton acccionRequisitos;
     @BindView(R.id.accion_costos)
@@ -98,6 +97,16 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     FloatingActionButton accionSeguimiento;
     @BindView(R.id.floating_menu)
     FloatingActionsMenu floatingMenu;
+    @BindView(R.id.tv_tiempo)
+    TextView tvTiempo;
+    @BindView(R.id.tv_distance)
+    TextView tvDistance;
+    @BindView(R.id.tv_destino)
+    TextView tvDestino;
+    @BindView(R.id.tv_ganancia)
+    TextView tvGanancia;
+    @BindView(R.id.container_datos)
+    LinearLayout containerDatos;
     private BroadcastReceiver mNotificationsReceiver;
 
 
@@ -267,6 +276,34 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                     channelName, NotificationManager.IMPORTANCE_LOW));
         }
 
+        accionSeguimiento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", idReserva);
+                nextActivity(getActivity(), bundle, SeguimientoActivity.class, false);
+            }
+        });
+
+        accionCostos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", idReserva);
+                nextActivity(getActivity(), bundle, CostosActivity.class, false);
+            }
+        });
+
+        acccionRequisitos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", idReserva);
+                nextActivity(getActivity(), bundle, RequisitosActivity.class, false);
+            }
+        });
 
     }
 
@@ -276,10 +313,13 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
             case 1:
                 UiServicio(DISPONIBLE, DISPONIBLE, false, true, true, false);
                 mySwitch.setChecked(true);
+                floatingMenu.setVisibility(View.GONE);
                 break;
 
             case 2:
                 UiServicio(NO_DISPONIBLE, NO_DISPONIBLE, false, true, true, false);
+                floatingMenu.setVisibility(View.GONE);
+                mySwitch.setChecked(false);
                 break;
 
             case 3:
@@ -350,6 +390,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 //13 EN EL PUNTO
                 UiServicio(EN_EL_PUNTO, USUARIO_CONTACTADO, true, false, false, true);
                 nextEstado = estado + 1;
+                floatingMenu.setVisibility(View.VISIBLE);
                 // nextEstado = 14;
                 break;
 
@@ -357,6 +398,8 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 //14 USUARIO CONTACTADO11
                 UiServicio(USUARIO_CONTACTADO, SERVICIO_EN_PROCESO, true, false, false, true);
                 nextEstado = estado + 1;
+                floatingMenu.setVisibility(View.VISIBLE);
+
                 //nextEstado = 15;
                 break;
 
@@ -364,6 +407,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 //15 SERVICIO EN PROCESO
                 UiServicio(SERVICIO_EN_PROCESO, "FINALIZAR SERVICIO", true, false, false, true);
                 nextEstado = estado + 1;
+                floatingMenu.setVisibility(View.VISIBLE);
                 //nextEstado = 16;
                 break;
 
@@ -371,6 +415,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 //16 SERVICIO FINALIZADO
                 UiServicio(SERVICIO_FINALIZADO, "PONERME DISPONIBLE", true, false, false, true);
                 nextEstado = 1;
+                floatingMenu.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -477,7 +522,6 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                     }
 
                 } else {
-
                     // Permission denied, Disable the functionality that depends on this permission.
                     Toast.makeText(getContext(), "permission denied", Toast.LENGTH_LONG).show();
                 }
@@ -583,15 +627,18 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-                    DialogInfoWindow dialogInfoWindow = new DialogInfoWindow(getContext(), serEntity);
-                    dialogInfoWindow.show();
+
+                    if(idEstado == 2 || idEstado == 1){
+                        DialogInfoWindow dialogInfoWindow = new DialogInfoWindow(getContext(), serEntity);
+                        dialogInfoWindow.show();
+                    }
+
                     return false;
                 }
             });
         }
 
     }
-
 
     protected Bitmap doInBackground(String src) {
         try {
@@ -657,15 +704,20 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         idEstado = estadoResponse.getIdEstado();
         idReserva = estadoResponse.getIdReserva();
         validarEstadoDisponible(idEstado);
-
         //btnEstado.setText(estadoResponse.getDesestado());
 
     }
 
     @Override
-    public void sendEstadoResponse(String estado) {
+    public void sendEstadoResponse(String msg) {
         mPresenter.getEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado());
-        //tvConectado.setText("DISPONIBLE");
+        if(msg == "ERROR DISTANCIA") {
+            //ALERTA NO CAMBIA DE ESTADO
+            //mPresenter.getEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado());
+        }
+        if(msg == "SIN VALE"){
+            // ALERTA QUE INGRESE SU VALE
+        }
     }
 
     @Override
@@ -676,48 +728,38 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
     @Override
     public void getMarkers(ArrayList<MarkersEntity> list) {
-        for (int i = 0; i <list.size() ; i++) {
-            /*Marker myMarker = mMap.addMarker(new MarkerOptions()
+        visualizamovil = 1;
+        for (int i = 0; i < list.size(); i++) {
+            LatLng latLngDestino = new LatLng(Double.valueOf(list.get(i).getLatitude()), Double.valueOf(list.get(i).getLongitude()));
+
+            Marker myMarker = mMap.addMarker(new MarkerOptions()
                     .position(latLngDestino)
-                    .snippet(markersEntity.getDireccionReal())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_costos)));*/
+                    .snippet(list.get(i).getDireccionReal())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ybtnmmovil)));
         }
 
     }
 
     @Override
     public void getMarker(MarkersEntity markersEntity) {
+        visualizamovil = 1;
         LatLng latLngDestino = new LatLng(Double.valueOf(markersEntity.getLatitude()), Double.valueOf(markersEntity.getLongitude()));
 
         Marker myMarker = mMap.addMarker(new MarkerOptions()
                 .position(latLngDestino)
                 .snippet(markersEntity.getDireccionReal())
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_costos)));    }
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ybtnmmovil)));
+    }
 
     @Override
     public void getServicioPersonalResponse(ServicioPersonalEntity servicioPersonalEntity) {
 
     }
 
-    @Override
+   /* @Override
     public void getServSeguimientoResponse(SeguimientoResponse seguimientoResponse) {
 
-    }
-
-    @Override
-    public void getServRequisitosResponse(RequisitosResponse requisitosResponse) {
-
-    }
-
-    @Override
-    public void getServCostosResponse(CostosResponse costosResponse) {
-
-    }
-
-    @Override
-    public void getServCostosEsperaResponse(CostoTiempoEsperaResponse costoTiempoEsperaResponse) {
-
-    }
+    }*/
 
     @Override
     public boolean isActive() {

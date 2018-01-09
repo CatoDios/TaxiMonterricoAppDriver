@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class SeguimientoResponse implements Serializable {
     private int IdSeguimiento;
     private String Desseguimiento;
+    private int SecSeguimiento;
 
     public int getIdSeguimiento() {
         return IdSeguimiento;
@@ -24,5 +25,13 @@ public class SeguimientoResponse implements Serializable {
 
     public void setDesseguimiento(String desseguimiento) {
         Desseguimiento = desseguimiento;
+    }
+
+    public int getSecSeguimiento() {
+        return SecSeguimiento;
+    }
+
+    public void setSecSeguimiento(int secSeguimiento) {
+        SecSeguimiento = secSeguimiento;
     }
 }
