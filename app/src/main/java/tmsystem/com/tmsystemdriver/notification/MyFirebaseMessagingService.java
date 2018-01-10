@@ -54,14 +54,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Integer condition = Integer.parseInt(data.get("condition"));
 
         if(condition != null){
-            switch (condition){
+
+            if(condition == 1){
+                displayNotification(message,title);
+                startActivity(new Intent(this, AsignacionServicioActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+            }else {
+                displayNotification(message,title);
+                startActivity(new Intent(this, PrincipalActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            }
+
+        }
+
+        /*switch (condition){
                 case 1:
-                    displayNotification(message,title);
-                    startActivity(new Intent(this, AsignacionServicioActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     break;
                 case 2:
-                    displayNotification(message,title);
-                    startActivity(new Intent(this, PrincipalActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
                     break;
                 case 3:
                     displayNotification(message,title);
@@ -87,8 +96,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case 10:
                     displayNotification(message,title);
                     startActivity(new Intent(this, PrincipalActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-            }
-        }
+            }*/
     }
 
     private void sendNotification(String messageBody) {
@@ -179,7 +187,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
   private void displayNotification(String message, String title) {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_launcher_tm)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setDefaults(Notification.DEFAULT_VIBRATE)

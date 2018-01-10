@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +23,7 @@ import tmsystem.com.tmsystemdriver.core.BaseFragment;
 import tmsystem.com.tmsystemdriver.data.models.CostoEntity;
 import tmsystem.com.tmsystemdriver.data.models.CostoTiempoEsperaResponse;
 import tmsystem.com.tmsystemdriver.data.models.CostosResponse;
+import tmsystem.com.tmsystemdriver.data.models.MessageResponse;
 import tmsystem.com.tmsystemdriver.utils.ProgressDialogCustom;
 
 /**
@@ -119,6 +121,7 @@ public class CostosFragment extends BaseFragment implements CostosContract.View 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mProgressDialogCustom = new ProgressDialogCustom(getContext(), "Obteniendo datos...");
+
     }
 
 
@@ -152,9 +155,13 @@ public class CostosFragment extends BaseFragment implements CostosContract.View 
     }
 
     @Override
-    public void sendCostosResponse(String msg) {
-        mPresenter.getCostos(id);
-        etVale.setFocusable(false);
+    public void sendCostosResponse(MessageResponse msg) {
+        if(msg.getMessage().equals("Ok")){
+            showMessage("Datos enviados con éxito");
+            mPresenter.getCostos(id);
+            etVale.setFocusable(false);
+        }
+
     }
 
     @Override

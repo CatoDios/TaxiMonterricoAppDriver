@@ -311,6 +311,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
             }
         });
 
+
     }
 
     public void validarEstadoDisponible(int estado) {
@@ -321,6 +322,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 mySwitch.setChecked(true);
                 floatingMenu.setVisibility(View.GONE);
                 mMap.clear();
+                containerDatos.setVisibility(View.GONE);
                 break;
 
             case 2:
@@ -328,14 +330,17 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 floatingMenu.setVisibility(View.GONE);
                 mySwitch.setChecked(false);
                 mMap.clear();
+                containerDatos.setVisibility(View.GONE);
                 break;
 
             case 3:
                 // SESION CERRADA 3
+                containerDatos.setVisibility(View.GONE);
 
                 break;
             case 4:
                 // A MI DOMICILIO 4
+                containerDatos.setVisibility(View.GONE);
                 break;
 
             case 5:
@@ -343,6 +348,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 String msg = "SUSPENCIÓN TEMPORAL";
                 mySwitch.setClickable(false);
                 alertaNodisponible(msg);
+                containerDatos.setVisibility(View.GONE);
                 break;
 
             case 6:
@@ -350,6 +356,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 String msg1 = "SUSPENSIÓN DEFINITIVA";
                 mySwitch.setClickable(false);
                 alertaNodisponible(msg1);
+                containerDatos.setVisibility(View.GONE);
                 break;
 
             case 7:
@@ -357,6 +364,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 String msg2 = "PERMISO TEMPORAL";
                 mySwitch.setClickable(false);
                 alertaNodisponible(msg2);
+                containerDatos.setVisibility(View.GONE);
                 break;
 
             case 8:
@@ -364,11 +372,13 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 String msg3 = "LLAMADO A BASE";
                 mySwitch.setClickable(false);
                 alertaNodisponible(msg3);
+                containerDatos.setVisibility(View.GONE);
                 break;
 
             case 9:
                 //SERVICIO PENDIENTE DE ASIGNACION
                 mPresenter.getEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado());
+                containerDatos.setVisibility(View.GONE);
                 break;
 
             case 10:
@@ -376,6 +386,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 nextActivity(getActivity(), null, AsignacionServicioActivity.class, true);
                 UiServicio(DISPONIBLE, "TOMAR SERVICIO", true, false, false, true);
                 btnEstado.setBackgroundColor(getResources().getColor(R.color.green));
+                containerDatos.setVisibility(View.GONE);
                 break;
 
             case 11:
@@ -383,6 +394,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 nextActivity(getActivity(), null, AsignacionServicioActivity.class, true);
                 UiServicio(DISPONIBLE, "TOMAR SERVICIO", true, false, false, true);
                 btnEstado.setBackgroundColor(getResources().getColor(R.color.green));
+                containerDatos.setVisibility(View.GONE);
                 break;
 
             case 12:
@@ -392,6 +404,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 floatingMenu.setVisibility(View.VISIBLE);
                 mPresenter.getServicio(idReserva);
                 mPresenter.getMarkers(idReserva);
+                containerDatos.setVisibility(View.GONE);
                 break;
 
             case 13:
@@ -402,6 +415,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 floatingMenu.setVisibility(View.VISIBLE);
                 mPresenter.getServicio(idReserva);
                 mPresenter.getMarkers(idReserva);
+                containerDatos.setVisibility(View.GONE);
                 // nextEstado = 14;
                 break;
 
@@ -410,9 +424,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 UiServicio(USUARIO_CONTACTADO, SERVICIO_EN_PROCESO, true, false, false, true);
                 nextEstado = estado + 1;
                 floatingMenu.setVisibility(View.VISIBLE);
-                mPresenter.getServicio(idReserva);
-                mPresenter.getMarkers(idReserva);
-
+                containerDatos.setVisibility(View.GONE);
                 //nextEstado = 15;
                 break;
 
@@ -423,6 +435,7 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
                 floatingMenu.setVisibility(View.VISIBLE);
                 mPresenter.getServicio(idReserva);
                 mPresenter.getMarkers(idReserva);
+                containerDatos.setVisibility(View.VISIBLE);
                 //nextEstado = 16;
                 break;
 
@@ -501,8 +514,6 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
         }
 
         googleMap.setOnMarkerClickListener(this);
-
-
         // mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(LayoutInflater.from(getActivity())));
     }
 
@@ -762,6 +773,10 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
     public void getServicioResponse(ServicioEntity servicioEntity) {
         serEntity = servicioEntity;
 
+        tvDestino.setText(servicioEntity.getRutafinal());
+        tvDistance.setText(servicioEntity.getDistanciaReserva());
+        tvGanancia.setText(String.valueOf(servicioEntity.getTarifa()));
+
     }
 
     @Override
@@ -848,8 +863,6 @@ public class MainFragment extends BaseFragment implements GoogleMap.OnMyLocation
 
             getlatitude = marker.getPosition().latitude;
             getlongitude = marker.getPosition().longitude;
-
-            Toast.makeText(getContext(), marker.getSnippet() + marker.getPosition().latitude + marker.getPosition().longitude, Toast.LENGTH_SHORT).show();
 
             if (idEstado != 2 || idEstado != 1) {
                 DialogInfoWindow dialogInfoWindow = new DialogInfoWindow(getContext(), serEntity, getlatitude, getlongitude);

@@ -8,6 +8,7 @@ import retrofit2.http.POST;
 import tmsystem.com.tmsystemdriver.data.models.CostoEntity;
 import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
 import tmsystem.com.tmsystemdriver.data.models.GpsEntity;
+import tmsystem.com.tmsystemdriver.data.models.MessageResponse;
 import tmsystem.com.tmsystemdriver.data.models.SeguimientoEntity;
 import tmsystem.com.tmsystemdriver.data.models.SendEstado;
 
@@ -27,8 +28,8 @@ public interface PostRequest {
                              @Body SeguimientoEntity seguimientoEntity);
 
     @POST("api/AppAsociado/PostServiciosCostos")
-    Call<String> sendCostos(@Header("Authorization") String token,
-                            @Body CostoEntity costoEntity);
+    Call<MessageResponse> sendCostos(@Header("Authorization") String token,
+                                     @Body CostoEntity costoEntity);
 
 
     @POST("api/AppAsociado/PostServiciosEnvioGPS")

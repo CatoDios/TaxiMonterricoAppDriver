@@ -62,7 +62,7 @@ public class SeguimientoPresenter implements SeguimientoContract.Presenter , Seg
 
                 if (response.isSuccessful()) {
                     mView.getListSeguimiento(response.body());
-                    mView.showMessage("seguimiento");
+                    mView.showMessage("Seguimiento Obtenido");
 
                     //openSession(token, response.body());
 

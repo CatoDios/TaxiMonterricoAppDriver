@@ -1,54 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
-            <item
-            android:id="@+id/ac_inicio"
-            android:icon="@drawable/btnmnuturno"
-            android:title="Inicio" />
-        <item
-            android:id="@+id/ac_servicio"
-            android:icon="@drawable/btnmnumensaje"
-            android:title="Agencia de Servicios" />
-
-
-        <item
-            android:id="@+id/ac_ganancia"
-            android:icon="@drawable/btnmnupagos"
-            android:title="Ganancias" />
-
-        <item
-            android:id="@+id/ac_chat"
-            android:icon="@drawable/btnmnuvalespendientes"
-            android:title="Chat" />
+    <item
+        android:id="@+id/ac_inicio"
+        android:icon="@drawable/ic_inicio"
+        android:iconTint="@color/gris"
+        android:title="Inicio" />
+    <item
+        android:id="@+id/ac_servicio"
+        android:icon="@drawable/ic_calendar"
+        android:iconTint="@color/gris"
+        android:title="Agenda" />
 
 
-        <item
-            android:id="@+id/ac_pagos"
-            android:icon="@drawable/btnserviciosvuelo"
-            android:title="Pagos y Facturación" />
+    <item
+        android:id="@+id/ac_ganancia"
+        android:icon="@drawable/ic_ganancia"
+        android:title="Ganancias" />
 
-        <item
-            android:id="@+id/ac_perfil"
-            android:icon="@drawable/btnmnuservdisponibles"
-            android:title="Perfil" />
-
-
-    </group>
+    <item
+        android:id="@+id/ac_chat"
+        android:icon="@drawable/ic_mensajeria"
+        android:title="Mensajería" />
 
 
-    <group
-        android:id="@+id/group2">
+    <item
+        android:id="@+id/ac_pagos"
+        android:icon="@drawable/ic_costos"
+        android:iconTint="@color/gris"
+        android:title="Pagos y Facturación" />
 
-        <item
-            android:id="@+id/ac_casa"
-            android:icon="@drawable/btnmnucasa"
-            android:title="Para mi casa" />
-        <item
-            android:id="@+id/ac_salir"
-            android:icon="@drawable/btnmnusalir"
-            android:title="Cerrar App" />
-    </group>
+    <item
+        android:id="@+id/ac_perfil"
+        android:icon="@drawable/ic_perfil"
+        android:title="Perfil" />
+    <item
+        android:id="@+id/ac_capacitacion"
+        android:icon="@drawable/ic_capacitacion"
+        android:title="Capacitación" />
+
+
+    <item
+        android:id="@+id/ac_casa"
+        android:icon="@drawable/btnmnucasa"
+        android:iconTint="@color/gris"
+        android:title="A mi domicilio" />
+    <item
+        android:id="@+id/ac_salir"
+        android:icon="@drawable/btnmnusalir"
+        android:iconTint="@color/gris"
+        android:title="Cerrar App" />
+    <item
+        android:id="@+id/ac_termino"
+        android:title="Términos y Condiciones" />
+
+    <item
+        android:id="@+id/ac_politicas"
+        android:title="Políticas de privacidad" />
 
 
 </menu>

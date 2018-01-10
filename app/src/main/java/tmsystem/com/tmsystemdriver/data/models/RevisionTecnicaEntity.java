@@ -1,7 +1,10 @@
 package tmsystem.com.tmsystemdriver.data.models;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by M on 20/12/2017.
@@ -10,7 +13,7 @@ import java.util.Date;
 public class RevisionTecnicaEntity implements Serializable {
 
     private String desrevisiontecnica;
-    private Date fecvencrevisiontecnica;
+    private String fecvencrevisiontecnica;
     private int fecvencrevisiontecnicadia;
     private String ImaRevisionTecnicala;
     private String ImaRevisionTecnicalb;
@@ -23,11 +26,11 @@ public class RevisionTecnicaEntity implements Serializable {
         this.desrevisiontecnica = desrevisiontecnica;
     }
 
-    public Date getFecvencrevisiontecnica() {
+    public String getFecvencrevisiontecnica() {
         return fecvencrevisiontecnica;
     }
 
-    public void setFecvencrevisiontecnica(Date fecvencrevisiontecnica) {
+    public void setFecvencrevisiontecnica(String fecvencrevisiontecnica) {
         this.fecvencrevisiontecnica = fecvencrevisiontecnica;
     }
 
@@ -53,5 +56,20 @@ public class RevisionTecnicaEntity implements Serializable {
 
     public void setImaRevisionTecnicalb(String imaRevisionTecnicalb) {
         ImaRevisionTecnicalb = imaRevisionTecnicalb;
+    }
+    public String getDay(){
+        if (getFecvencrevisiontecnica() == null ){
+            return "";
+        }
+        Date tempDate = null;
+        SimpleDateFormat parseDateFromServer= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat parseDateForShowDetail =  new SimpleDateFormat("dd' de 'MMMM' del 'yyyy", new Locale("es","ES"));
+
+        try {
+            tempDate = parseDateFromServer.parse(getFecvencrevisiontecnica());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return parseDateForShowDetail.format(tempDate);
     }
 }

@@ -19,6 +19,7 @@ public class ServicioEntity implements Serializable {
     private String DistanciaReserva;
     private String rutainicio;
     private String rutafinal;
+    private Double tarifa;
     private String message;
 
     public String getDistanciaReserva() {
@@ -123,5 +124,13 @@ public class ServicioEntity implements Serializable {
 
     public void setRutafinal(String rutafinal) {
         this.rutafinal = rutafinal;
+    }
+
+    public Double getTarifa() {
+        return tarifa;
+    }
+
+    public void setTarifa(Double tarifa) {
+        this.tarifa = tarifa;
     }
 }

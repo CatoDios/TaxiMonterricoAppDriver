@@ -7,6 +7,7 @@ import tmsystem.com.tmsystemdriver.core.BaseView;
 import tmsystem.com.tmsystemdriver.data.models.CostoEntity;
 import tmsystem.com.tmsystemdriver.data.models.CostoTiempoEsperaResponse;
 import tmsystem.com.tmsystemdriver.data.models.CostosResponse;
+import tmsystem.com.tmsystemdriver.data.models.MessageResponse;
 import tmsystem.com.tmsystemdriver.data.models.SeguimientoResponse;
 
 /**
@@ -19,7 +20,7 @@ public class CostosContract {
         void getDatosCostos(CostosResponse costosResponse);
         void getDatosEspera(CostoTiempoEsperaResponse costoTiempoEsperaResponse);
 
-        void sendCostosResponse(String msg);
+        void sendCostosResponse(MessageResponse msg);
 
         boolean isActive();
     }

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_tmd">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:id="@+id/container_top"
+            android:layout_weight="3"
+            android:background="@color/back_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:padding="5dp">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:id="@+id/cont_uno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:tint="@color/colorPrimary"
+                    android:src="@drawable/ic_user"/>
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:text="Datos de Conductor"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:id="@+id/cont_dos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:tint="@color/gris"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_marker1"/>
+
+                <TextView
+                    android:textColor="@color/gris"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="Ubicación"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:id="@+id/cont_tres"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:tint="@color/gris"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_car" />
+
+                <TextView
+                    android:textColor="@color/gris"
+                    android:layout_width="70dp"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="Datos de Vehículo"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_below="@id/container_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_launcher"/>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_nombre"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="center_horizontal">
+
+                    <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/White"
+                        android:textColor="@color/White"
+                        android:hint="Nombres"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:padding="10dp" />
+                </android.support.design.widget.TextInputLayout>
+
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_apellido"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="center_horizontal">
+
+                    <EditText
+                        android:id="@+id/et_apellido"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/White"
+                        android:textColor="@color/White"
+                        android:hint="Apellidos"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:padding="10dp" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_email"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="center_horizontal">
+
+                    <EditText
+                        android:id="@+id/et_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/White"
+                        android:textColor="@color/White"
+                        android:hint="Nombres"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:padding="10dp" />
+                </android.support.design.widget.TextInputLayout>
+
+
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>

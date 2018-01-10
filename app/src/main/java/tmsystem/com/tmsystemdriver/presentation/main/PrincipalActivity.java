@@ -14,12 +14,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 
 import tmsystem.com.tmsystemdriver.R;
 import tmsystem.com.tmsystemdriver.core.BaseActivity;
 import tmsystem.com.tmsystemdriver.data.local.SessionManager;
+import tmsystem.com.tmsystemdriver.data.models.EstadoResponse;
+import tmsystem.com.tmsystemdriver.data.models.MarkersEntity;
+import tmsystem.com.tmsystemdriver.data.models.SendEstado;
+import tmsystem.com.tmsystemdriver.data.models.ServicioEntity;
+import tmsystem.com.tmsystemdriver.data.models.ServicioPersonalEntity;
 import tmsystem.com.tmsystemdriver.data.models.UserEntity;
 import tmsystem.com.tmsystemdriver.presentation.auth.LoginActivity;
 import tmsystem.com.tmsystemdriver.utils.ActivityUtils;
@@ -28,7 +36,7 @@ import tmsystem.com.tmsystemdriver.utils.ActivityUtils;
  * Created by kath on 20/12/17.
  */
 
-public class PrincipalActivity extends BaseActivity  implements  MainInterface{
+public class PrincipalActivity extends BaseActivity  implements  MainInterface, MainContract.View{
 
     DrawerLayout mDrawer;
     NavigationView navigationView;
@@ -44,11 +52,16 @@ public class PrincipalActivity extends BaseActivity  implements  MainInterface{
     private MainFragment fragment;
     private ActionBarDrawerToggle drawerToggle;
 
-    @Override
+    private MainContract.Presenter mPresenter;
+
+    private boolean aCasa = false;
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
         mSessionManager = new SessionManager(this);
+        mPresenter = new MainPresenter(this, getApplicationContext());
 
         /**
          *Setup the DrawerLayout and NavigationView
@@ -118,28 +131,45 @@ public class PrincipalActivity extends BaseActivity  implements  MainInterface{
                                 //Intent intent = new Intent(TicketsActivity.this , ProfileActivity.class);
                                 //startActivityForResult(intent, 7);
                                 break;
+
                             case R.id.ac_servicio:
                                 // next(TicketsActivity.this, null, CountriesActivity.class, false);
                                 break;
+
                             case R.id.ac_ganancia:
                                 //next(TicketsActivity.this, null, SlideActivity.class, false);
                                 break;
+
                             case R.id.ac_chat:
                                 //next(TicketsActivity.this,null, AboutUsActivity.class, false);
                                 break;
+
                             case R.id.ac_pagos:
                                 CloseSession();
                                 break;
+
                             case R.id.ac_perfil:
                                 //Intent intent = new Intent(TicketsActivity.this , ProfileActivity.class);
                                 //startActivityForResult(intent, 7);
                                 break;
+
                             case R.id.ac_casa:
+                                aCasa = true;  SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(),4, 0);
+                                mPresenter.sendEstado(sendEstado);
+
                                 //next(TicketsActivity.this, null, CountriesActivity.class, false);
                                 break;
+
                             case R.id.ac_salir:
                                 salirapp();
                                 break;
+
+                            case R.id.ac_termino:
+                                break;
+
+                            case R.id.ac_politicas:
+                                break;
+
                             default:
                                 break;
                         }
@@ -247,6 +277,8 @@ public class PrincipalActivity extends BaseActivity  implements  MainInterface{
                 .setCancelable(false)
                 .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        SendEstado sendEstado = new SendEstado(mSessionManager.getUserEntity().getAsociado().getIdasociado(),3, 0);
+                        mPresenter.sendEstado(sendEstado);
                         CloseSession();
                     }
                 })
@@ -276,5 +308,60 @@ public class PrincipalActivity extends BaseActivity  implements  MainInterface{
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         toolbar.setVisibility(View.VISIBLE);
 
+    }
+
+    @Override
+    public void setPresenter(MainContract.Presenter presenter) {
+        this.mPresenter = presenter;
+
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean active) {
+
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+
+    }
+
+    @Override
+    public void getEstadoResponse(EstadoResponse estadoResponse) {
+
+    }
+
+    @Override
+    public void getServicioResponse(ServicioEntity servicioEntity) {
+
+    }
+
+    @Override
+    public void getMarkers(ArrayList<MarkersEntity> list) {
+
+    }
+
+    @Override
+    public void getMarker(MarkersEntity markersEntity) {
+
+    }
+
+    @Override
+    public void getServicioPersonalResponse(ServicioPersonalEntity servicioPersonalEntity) {
+
+    }
+
+    @Override
+    public void sendEstadoResponse(String msg) {
+        if (aCasa){
+            Toast.makeText(this, "A mi domicilio", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this, "Sesión Cerrada", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean isActive() {
+        return true;
     }
 }

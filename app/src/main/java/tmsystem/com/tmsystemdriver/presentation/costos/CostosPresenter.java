@@ -11,6 +11,7 @@ import tmsystem.com.tmsystemdriver.data.local.SessionManager;
 import tmsystem.com.tmsystemdriver.data.models.CostoEntity;
 import tmsystem.com.tmsystemdriver.data.models.CostoTiempoEsperaResponse;
 import tmsystem.com.tmsystemdriver.data.models.CostosResponse;
+import tmsystem.com.tmsystemdriver.data.models.MessageResponse;
 import tmsystem.com.tmsystemdriver.data.models.SeguimientoResponse;
 import tmsystem.com.tmsystemdriver.data.remote.ServiceFactory;
 import tmsystem.com.tmsystemdriver.data.remote.request.GetRequest;
@@ -113,10 +114,10 @@ public class CostosPresenter implements CostosContract.Presenter {
     public void sendCostos(CostoEntity costoEntity) {
         PostRequest postRequest =
                 ServiceFactory.createService(PostRequest.class);
-        Call<String> call = postRequest.sendCostos("bearer "+ mSessionManager.getUserToken(), costoEntity);
-        call.enqueue(new Callback<String>() {
+        Call<MessageResponse> call = postRequest.sendCostos("bearer "+ mSessionManager.getUserToken(), costoEntity);
+        call.enqueue(new Callback<MessageResponse>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
                 if (!mView.isActive()) {
                     return;
                 }
@@ -133,7 +134,7 @@ public class CostosPresenter implements CostosContract.Presenter {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<MessageResponse> call, Throwable t) {
                 if (!mView.isActive()) {
                     return;
                 }

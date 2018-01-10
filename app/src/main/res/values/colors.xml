@@ -45,6 +45,8 @@
     <color name="gray_regular">#858585</color>
     <color name="gray">#b1b1b1</color>
 
+    <color name="back_gray">#F1F1F1</color>
+
 
 
 </resources>
